@@ -1,0 +1,23 @@
+{
+  "name": "eloquent-js-exercises",
+  "version": "1.0.0",
+  "description": "Exercises and practice from the book Eloquent Javascript by Marijn Haverbeke.",
+  "main": "index.js",
+  "dependencies": {
+    "deep-equal": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claycarpenter/eloquent-js-exercises.git"
+  },
+  "author": "Clay Carpenter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/claycarpenter/eloquent-js-exercises/issues"
+  },
+  "homepage": "https://github.com/claycarpenter/eloquent-js-exercises"
+}

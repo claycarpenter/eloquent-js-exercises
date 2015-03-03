@@ -142,6 +142,21 @@ RTextCell.prototype.draw = function (width, height) {
     return result;
 };
 
+function StretchCell (inner, width, height) {
+    this.inner = inner;
+    
+    this.width = width;
+    this.height = height;
+}
+StretchCell.prototype.minWidth = function () {
+    return Math.max(this.width, this.inner.minWidth());
+}
+StretchCell.prototype.minHeight = function () {
+    return Math.max(this.height, this.inner.minHeight());
+}
+StretchCell.prototype.draw = function (width, height) {
+    return this.inner.draw(width, height);
+}
 
 function createTable () {
     var rows = [];
@@ -179,7 +194,8 @@ function dataTable(data) {
             if (typeof value === 'number') {
                 cell = new RTextCell(String(value));    
             } else {
-                cell = new TextCell(String(value));
+                cell = new StretchCell(
+                    new TextCell(String(value)), 15, 2);
             }
             
             return cell;

@@ -29,6 +29,7 @@
             if (error instanceof InputError) {
                 console.log('Input Error:: ' + error.message);
             } else {
+                // Unexpected error; throw.
                 throw error;
             }
         } finally {

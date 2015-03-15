@@ -1,11 +1,15 @@
 var fs = require('fs'),
     parser = require('./egg-parser.js');
 
-var contents = fs.readFileSync('./simple-1.egg').toString();
+var filename = process.argv[2];
 
-console.log('Found this program:')
+console.log('Loading file:', filename);
+
+var contents = fs.readFileSync(filename).toString();
+
+console.log('\nFound this program:');
 console.log(contents);
 
-console.log('Parsing and executing program (debug).');
+console.log('\nParsing and executing program (debug).');
 parser.run(contents, {printSyntaxTree: true});
 

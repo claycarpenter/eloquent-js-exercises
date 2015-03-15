@@ -83,9 +83,11 @@ function evaluate(expr, env) {
                 throw new TypeError('Applying a non-function.');
             }
             
-            return op.apply(null, expr.args.map(function(arg) {
+            var applyArgs = expr.args.map(function(arg) {
                 return evaluate(arg, env);
-            }));
+            });
+            
+            return op.apply(null, applyArgs);
     }
 }
 
@@ -200,6 +202,34 @@ topEnv['print'] = function(value) {
     
     return value;
 };
+
+topEnv['array'] = function() {
+    console.log('Array contents:', arguments);
+    
+    var newArray = [];
+    
+    for (var i = 0, x = arguments.length; i < x; i++) {
+        newArray.push(arguments[i]);
+    }
+    
+    return newArray;  
+};
+
+topEnv['length'] = function(array) {
+    if (!(array instanceof Array)) {
+        throw new SyntaxError('Cannot call length on non-Array object.');   
+    }
+    
+    return array.length;
+};
+
+topEnv['element'] = function(array, index) {
+    if (!(array instanceof Array)) {
+        throw new SyntaxError('Cannot call length on non-Array object.');   
+    }
+    
+    return array[index];
+}
 
 function run(program, options) {
     var env = Object.create(topEnv);

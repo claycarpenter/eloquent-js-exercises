@@ -1,0 +1,6 @@
+do(
+    define(data, array(1,2,3)),
+    print(data),
+    print(length(data)),
+    print(element(data, 0))
+)

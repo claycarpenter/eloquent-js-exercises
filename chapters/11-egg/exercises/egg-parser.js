@@ -4,7 +4,7 @@ function parseExpression(program) {
     
     var match, expr;
     
-    if (match = /^"([^"])*"/.exec(program)) {
+    if (match = /^"([^"]*)"/.exec(program)) {
         expr = {
             type: 'value',
             value: match[1]

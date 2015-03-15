@@ -92,13 +92,23 @@ function evaluate(expr, env) {
 }
 
 function skipSpace(string) {
-    var first = string.search(/\S/);
+    // '        # Some comment... '
     
-    if (first == -1) {
-        return '';
-    }
+    // console.log('Skip space operating on: \"' + string + '\"');
     
-    return string.slice(first);
+    var test = string.replace(/^\s*(#.*?\n)?/, '');
+    
+    // console.log('Test: \"' + test + '\"');
+    
+    return test;
+    
+    // var first = string.search(/\S/);
+    
+    // if (first == -1) {
+    //     return '';
+    // }
+    
+    // return string.slice(first);
 }
 
 function parse(program) {

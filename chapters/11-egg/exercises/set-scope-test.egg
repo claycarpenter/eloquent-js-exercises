@@ -1,0 +1,16 @@
+# Test of the set function, updating local scope inside a function.
+do(
+    define(testFunction, fun(do(
+        define(foo, "nested define"),
+        print(foo),
+        set(foo, "nested update"),
+        print(foo)
+        ))),
+    define(foo, "global define"),
+    print(foo),
+    testFunction(),
+    print("After nested updates"),
+    print(foo),
+    set(foo, "global update"),  
+    print(foo)                 
+)

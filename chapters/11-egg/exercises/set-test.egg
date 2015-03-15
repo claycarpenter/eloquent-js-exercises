@@ -1,0 +1,6 @@
+# Very simple test of the set function.
+do(
+    define(foo, "bar"),         # Define the variable foo
+    set(foo, "hello world!"),   # Change value of foo to "set"
+    print(foo)                  # Print the value stored in foo
+)

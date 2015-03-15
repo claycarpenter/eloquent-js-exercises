@@ -168,6 +168,35 @@ specialForms['define'] = function(args, env) {
     return value;
 };
 
+specialForms['set'] = function(args, env) {
+    if (args.length != 2 || args[0].type != 'word') {
+        throw new SyntaxError('Bad use of define');
+    }
+    
+    // Evaluate the value for the variable.
+    var value = evaluate(args[1], env);
+    
+    var name = args[0].name;
+    
+    // Determine the appropriate scope for the variable.
+    var scope = env;
+    
+    while (
+        scope != null && 
+        !Object.prototype.hasOwnProperty.call(scope, name)) {
+        scope = Object.getPrototypeOf(scope);
+    }
+    
+    if (scope == null) {
+        throw new ReferenceError('Cannot locate variable \"' + name + '\" in any parent scope.');
+    }
+    
+    // Update the value of the variable in the correct scope.
+    scope[name] = value;
+    
+    return value;
+};
+
 specialForms['fun'] = function(args, env) {
     if (!args.length) {
         throw new SyntaxError('Functions need a body');
@@ -199,7 +228,9 @@ specialForms['fun'] = function(args, env) {
     };
 };
 
+// Create a global environment that has no parent object.
 var topEnv = Object.create(null);
+
 topEnv['true'] = true;
 topEnv['false'] = false;
 

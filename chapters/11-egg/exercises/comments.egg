@@ -1,0 +1,7 @@
+# This Egg source demonstrates comments parsing support.
+do(
+    # The do function simply executes a list of arguments.
+    
+    define(foo, "bar"), # Define the variable foo
+    print(foo) # Print the value stored in foo
+)

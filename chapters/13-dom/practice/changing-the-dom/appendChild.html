@@ -1,5 +1,12 @@
 <!doctype html>
 <html>
+    <head>
+        <style>
+            .input-group {
+                margin: 1em;   
+            }
+        </style>
+    </head>
 <body>
     <p>
         Lorem ipsum all that jazz...
@@ -7,13 +14,26 @@
     <ol start="0" id="parent">
     </ol>
     
-    <div>
+    <div class="input-group">
         <button id="appendChildTrigger">appendChild</button>
     </div>
-    <div>
+    
+    <div class="input-group">
         <label for="#removeTargetIdx">Remove target idx:</label>
-        <input type="number" id="removeTargetIdx">
+        <input type="text" size="4" id="removeTargetIdx">
         <button id="removeChildTrigger">removeChild</button>
+    </div>
+    
+    <div class="input-group">
+        <div>
+            <label for="#insertBeforeMovingChildIdx">Moving child idx:</label>
+            <input type="text" size="4" id="insertBeforeMovingChildIdx">
+        </div>
+        <div>
+            <label for="#insertBeforeTargetChildIdx">Target child idx:</label>
+            <input type="text" size="4" id="insertBeforeTargetChildIdx">
+        </div>
+        <button id="insertBeforeTrigger">insertBefore</button>
     </div>
     
     <script>
@@ -34,6 +54,14 @@
             return childElementsArray[childIndex];
         };
         
+        function getInputValue(inputElmntId) {
+            var inputElement = document.getElementById(inputElmntId);
+            
+            if (inputElement) {
+                return inputElement.value;
+            }
+        }
+        
         function appendChildTest() {
             var newChildIndex = appendChildParent.getElementsByTagName('*').length;
             
@@ -44,8 +72,7 @@
         };
         
         function removeChildTest() {
-            var removeChildIdxInput = document.getElementById('removeTargetIdx');
-            var removeChildIndex = Number(removeChildIdxInput.value);
+            var removeChildIndex = Number(getInputValue('removeTargetIdx'));
             
             console.log('Removing child at index', removeChildIndex);
             
@@ -53,9 +80,21 @@
             
             if (!targetChild) {
                 alert('Invalid index for target child.');
+                
+                return;
             }
             
             appendChildParent.removeChild(targetChild);
+        };
+        
+        function insertBeforeTest() {
+            var movingChildIdx = Number(getInputValue('insertBeforeMovingChildIdx'));
+            var targetChildIdx = Number(getInputValue('insertBeforeTargetChildIdx'));
+            
+            var movingChild = getChildAtIndex(appendChildParent, movingChildIdx);
+            var targetChild = getChildAtIndex(appendChildParent, targetChildIdx);
+            
+            appendChildParent.insertBefore(movingChild, targetChild);
         };
         
         // Link appendChild trigger, test.
@@ -63,6 +102,9 @@
         
         // Link removeChild trigger, test.
         setTriggerHandler('removeChildTrigger', removeChildTest);
+        
+        // Link insertBefore trigger, test.
+        setTriggerHandler('insertBeforeTrigger', insertBeforeTest);
         
         // Create some test values to start with.
         for (var i = 0; i < 5; i++) {

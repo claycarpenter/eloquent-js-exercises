@@ -36,6 +36,18 @@
         <button id="insertBeforeTrigger">insertBefore</button>
     </div>
     
+    <div class="input-group">
+        <div>
+            <label for="#replacingChildIdx">Replacing child idx:</label>
+            <input type="text" size="4" id="replacingChildIdx">
+        </div>
+        <div>
+            <label for="#replacedChildIdx">Replaced child idx:</label>
+            <input type="text" size="4" id="replacedChildIdx">
+        </div>
+        <button id="replaceChildTrigger">replaceChild</button>
+    </div>
+    
     <script>
         var appendChildParent = document.getElementById('parent');
         
@@ -62,6 +74,13 @@
             }
         }
         
+        function getChildElementForInput(parentElement, inputElmntId) {
+            var childIdx = Number(getInputValue(inputElmntId));
+            var childElmnt = getChildAtIndex(parentElement, childIdx);
+            
+            return childElmnt;
+        };
+        
         function appendChildTest() {
             var newChildIndex = appendChildParent.getElementsByTagName('*').length;
             
@@ -72,11 +91,7 @@
         };
         
         function removeChildTest() {
-            var removeChildIndex = Number(getInputValue('removeTargetIdx'));
-            
-            console.log('Removing child at index', removeChildIndex);
-            
-            var targetChild = getChildAtIndex(appendChildParent, removeChildIndex);
+            var targetChild = getChildElementForInput(appendChildParent, 'removeTargetIdx');
             
             if (!targetChild) {
                 alert('Invalid index for target child.');
@@ -88,13 +103,21 @@
         };
         
         function insertBeforeTest() {
-            var movingChildIdx = Number(getInputValue('insertBeforeMovingChildIdx'));
-            var targetChildIdx = Number(getInputValue('insertBeforeTargetChildIdx'));
-            
-            var movingChild = getChildAtIndex(appendChildParent, movingChildIdx);
-            var targetChild = getChildAtIndex(appendChildParent, targetChildIdx);
+            var movingChild = getChildElementForInput(
+                appendChildParent, 'insertBeforeMovingChildIdx');
+            var targetChild = getChildElementForInput(
+                appendChildParent, 'insertBeforeTargetChildIdx');
             
             appendChildParent.insertBefore(movingChild, targetChild);
+        };
+        
+        function replaceChildTest() {
+            var replacingChild = getChildElementForInput(
+                appendChildParent, 'replacingChildIdx');
+            var replacedChild = getChildElementForInput(
+                appendChildParent, 'replacedChildIdx');
+            
+            appendChildParent.replaceChild(replacingChild, replacedChild);
         };
         
         // Link appendChild trigger, test.
@@ -105,6 +128,9 @@
         
         // Link insertBefore trigger, test.
         setTriggerHandler('insertBeforeTrigger', insertBeforeTest);
+        
+        // Link replaceChild trigger, test.
+        setTriggerHandler('replaceChildTrigger', replaceChildTest);
         
         // Create some test values to start with.
         for (var i = 0; i < 5; i++) {

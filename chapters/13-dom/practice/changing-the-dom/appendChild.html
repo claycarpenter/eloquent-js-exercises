@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<body>
+    <p>
+        Lorem ipsum all that jazz...
+    </p>
+    <ul id="appendChildParent">
+    </ul>
+    
+    <button name="appendChild" id="appendChildTrigger">appendChild</button>
+    
+    <script>
+        var triggerButton = document.getElementById('appendChildTrigger');
+        
+        function appendChildTest() {
+            var appendChildParent = document.getElementById('appendChildParent');
+            var newChildIndex = appendChildParent.childNodes.length;
+            console.log(
+                'childNodes:',
+                appendChildParent.childNodes.length,
+                '-- getElementsByTagName(*):',
+                appendChildParent.getElementsByTagName('*').length);
+            
+            var newChild = document.createElement('li');
+            newChild.textContent = 'Item ' + newChildIndex + ' at ' + new Date();
+            
+            appendChildParent.appendChild(newChild);
+        };
+        
+        triggerButton.addEventListener('click', function(event) {
+            appendChildTest();
+        });
+        
+        // Create some test values to start with.
+        for (var i = 0; i < 5; i++) {
+            appendChildTest();   
+        }
+    </script>
+</body>
+</html>

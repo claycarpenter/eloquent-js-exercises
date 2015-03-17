@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<body>
+    <nav id="headerNav">
+        <ul>
+            <li><a href="#">Hello</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+    <p>
+        Lorem ipsum all that jazz...
+    </p>
+    <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+        <li><a href="#">Link 4</a></li>
+        <li><a href="#">Link 5</a></li>
+    </ul>
+    
+    <script>
+        function reportFindings(tags, reportAction) {
+            console.log('Reporting on', tags.length, 'tags.');
+            
+            var tagsArray = Array.prototype.slice.call(tags, 0);
+            
+            tagsArray.forEach(reportAction);
+        }
+        
+        function logTagIndexText(element, index) {
+            console.log('Tag', index, 'is a', element.tagName, 'containing: "' + element.textContent + '"');
+        };
+        
+        var bodyATags = document.body.getElementsByTagName('a');
+        reportFindings(bodyATags, logTagIndexText);
+        
+        var navTag = document.getElementById('headerNav');
+        reportFindings([navTag], logTagIndexText);
+        
+        var navATags = navTag.getElementsByTagName('a');
+        reportFindings(navATags, logTagIndexText);
+    </script>
+</body>
+</html>

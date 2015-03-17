@@ -4,22 +4,38 @@
     <p>
         Lorem ipsum all that jazz...
     </p>
-    <ul id="appendChildParent">
-    </ul>
+    <ol start="0" id="parent">
+    </ol>
     
-    <button name="appendChild" id="appendChildTrigger">appendChild</button>
+    <div>
+        <button id="appendChildTrigger">appendChild</button>
+    </div>
+    <div>
+        <label for="#removeTargetIdx">Remove target idx:</label>
+        <input type="number" id="removeTargetIdx">
+        <button id="removeChildTrigger">removeChild</button>
+    </div>
     
     <script>
-        var triggerButton = document.getElementById('appendChildTrigger');
+        var appendChildParent = document.getElementById('parent');
+        
+        function setTriggerHandler(triggerId, handler) {
+            var triggerButton = document.getElementById(triggerId);
+            
+            triggerButton.addEventListener('click', function(event) {
+                handler();
+            });
+        }
+        
+        function getChildAtIndex(parentElement, childIndex) {
+            var childElements = parentElement.getElementsByTagName('*');
+            var childElementsArray = Array.prototype.slice.call(childElements, 0);
+            
+            return childElementsArray[childIndex];
+        };
         
         function appendChildTest() {
-            var appendChildParent = document.getElementById('appendChildParent');
-            var newChildIndex = appendChildParent.childNodes.length;
-            console.log(
-                'childNodes:',
-                appendChildParent.childNodes.length,
-                '-- getElementsByTagName(*):',
-                appendChildParent.getElementsByTagName('*').length);
+            var newChildIndex = appendChildParent.getElementsByTagName('*').length;
             
             var newChild = document.createElement('li');
             newChild.textContent = 'Item ' + newChildIndex + ' at ' + new Date();
@@ -27,9 +43,26 @@
             appendChildParent.appendChild(newChild);
         };
         
-        triggerButton.addEventListener('click', function(event) {
-            appendChildTest();
-        });
+        function removeChildTest() {
+            var removeChildIdxInput = document.getElementById('removeTargetIdx');
+            var removeChildIndex = Number(removeChildIdxInput.value);
+            
+            console.log('Removing child at index', removeChildIndex);
+            
+            var targetChild = getChildAtIndex(appendChildParent, removeChildIndex);
+            
+            if (!targetChild) {
+                alert('Invalid index for target child.');
+            }
+            
+            appendChildParent.removeChild(targetChild);
+        };
+        
+        // Link appendChild trigger, test.
+        setTriggerHandler('appendChildTrigger', appendChildTest);
+        
+        // Link removeChild trigger, test.
+        setTriggerHandler('removeChildTrigger', removeChildTest);
         
         // Create some test values to start with.
         for (var i = 0; i < 5; i++) {

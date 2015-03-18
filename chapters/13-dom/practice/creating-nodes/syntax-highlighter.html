@@ -8,25 +8,57 @@
             .input-group {
                 margin: 1em;   
             }
+            .keyword {
+                font-weight: bold;
+                color: hsla(223, 100%, 61%, 1);
+            }
         </style>
     </head>
 <body>
-    
-    <div>
-        <pre>
-            function getX(x) {
-                return x;
-            }
-        </pre>
-    </div>
     
     <div class="input-group">
         <button id="triggerHighlight">Highlight</button>
         <button id="triggerRevert">Revert</button>
     </div>
     
+    <div>
+        <h3>JavaScript</h3>
+        <pre data-language="javascript">
+            function getX(x) {
+                return x;
+            }
+        </pre>
+    </div>
+    
+    <div>
+        <h3>Java</h3>
+        <pre data-language="java">
+            public class Simple {
+                private String name;
+                
+                public void setName(String name) {
+                    this.name = name;
+                }
+                
+                public String getName() {
+                    return name;
+                }
+            }
+        </pre>
+    </div>
+    
     <script>
-        function highlightCodeBlock(code, keywords) {
+        var languagePatterns = {    
+            javascript: /\b(function|return|var)\b/g,
+            java: /\b(class|public|private|return|void)\b/g
+        };
+        
+        function highlightCodeBlock(code) {
+            if (!code.getAttribute('data-language')) {
+                return;
+            }
+            
+            var keywords = languagePatterns[code.getAttribute('data-language')];            
             var text = code.textContent;
             code.textContent = '';
             
@@ -36,9 +68,10 @@
                 
                 code.appendChild(document.createTextNode(before));
                 
-                var strong = document.createElement('strong');
+                var strong = document.createElement('span');
                 strong.appendChild(
                     document.createTextNode(match[0]));
+                strong.className = 'keyword';
                 
                 code.appendChild(strong);
                 
@@ -50,6 +83,10 @@
         }
         
         function revertCodeBlock(code) {
+            if (!code.getAttribute('data-language')) {
+                return;
+            }
+            
             var text = code.textContent;
             
             while (code.firstChild) {
@@ -64,10 +101,9 @@
         function highlightAll() {
             var preTagsArray = Array.prototype.slice.call(
                 document.body.getElementsByTagName('pre'), 0);
-        
-            var jsSyntaxPatern = /\b(function|return|var)\b/g;
+            
             preTagsArray.forEach(function(pre) {
-                 highlightCodeBlock(pre, jsSyntaxPatern);
+                 highlightCodeBlock(pre);
             });
         };
         

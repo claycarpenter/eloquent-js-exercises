@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            * {
+                font-size: 1.3rem;   
+            }
+            .input-group {
+                margin: 1em;   
+            }
+        </style>
+    </head>
+<body>
+    
+    <div>
+        <blockquote id="quote">
+            No book can ever be finished. While working on it we learn
+            just enough to find it immature the moment we turn away
+            from it.
+        </blockquote>
+    </div>
+    
+    <div class="input-group">
+        <button id="trigger">Ta-da!</button>
+    </div>
+    
+    <script>
+        function elt(type) {
+            var node = document.createElement(type);
+            
+            for (var i = 1, x = arguments.length; i < x; i++) {
+                var child = arguments[i];
+                
+                if (typeof child === 'string') {
+                    child = document.createTextNode(child);
+                }
+                
+                node.appendChild(child);
+            }
+            
+            return node;
+        }
+        
+        // Link trigger, bold test.
+        document
+            .getElementById('trigger')
+            .addEventListener('click', 
+            function() {
+                var enhancement = elt(
+                    'footer', '--',
+                    elt('strong', 'Karl Popper'),
+                    ', preface to the second edition of ',
+                    elt('em', 'The Open Society and Its Enemies'),
+                    ', 1950');
+                
+                document.getElementById('quote').appendChild(enhancement);
+        });
+    </script>
+</body>
+</html>

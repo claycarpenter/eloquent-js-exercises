@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            * {
+                font-size: 1.3rem;   
+            }
+            .input-group {
+                margin: 1em;   
+            }
+        </style>
+    </head>
+<body>
+    
+    <div>
+        <pre>
+            function getX(x) {
+                return x;
+            }
+        </pre>
+    </div>
+    
+    <div class="input-group">
+        <button id="triggerHighlight">Highlight</button>
+        <button id="triggerRevert">Revert</button>
+    </div>
+    
+    <script>
+        function highlightCodeBlock(code, keywords) {
+            var text = code.textContent;
+            code.textContent = '';
+            
+            var match, pos = 0;
+            while (match = keywords.exec(text)) {
+                var before = text.slice(pos, match.index);
+                
+                code.appendChild(document.createTextNode(before));
+                
+                var strong = document.createElement('strong');
+                strong.appendChild(
+                    document.createTextNode(match[0]));
+                
+                code.appendChild(strong);
+                
+                pos = keywords.lastIndex;
+            }
+            
+            var after = text.slice(pos);
+            code.appendChild(document.createTextNode(after));
+        }
+        
+        function revertCodeBlock(code) {
+            var text = code.textContent;
+            
+            while (code.firstChild) {
+                code.removeChild(code.firstChild);
+            }
+            
+            code.appendChild(document.createTextNode(text));
+            
+            console.log('Output:', code.innerHTML);
+        }
+        
+        function highlightAll() {
+            var preTagsArray = Array.prototype.slice.call(
+                document.body.getElementsByTagName('pre'), 0);
+        
+            var jsSyntaxPatern = /\b(function|return|var)\b/g;
+            preTagsArray.forEach(function(pre) {
+                 highlightCodeBlock(pre, jsSyntaxPatern);
+            });
+        };
+        
+        function revertAll() {
+            var preTagsArray = Array.prototype.slice.call(
+                document.body.getElementsByTagName('pre'), 0);
+        
+            preTagsArray.forEach(function(pre) {
+                 revertCodeBlock(pre);
+            });
+        };
+        
+        document
+            .getElementById('triggerHighlight')
+            .addEventListener('click', 
+            highlightAll);
+        
+        document
+            .getElementById('triggerRevert')
+            .addEventListener('click', 
+            revertAll);
+    </script>
+</body>
+</html>

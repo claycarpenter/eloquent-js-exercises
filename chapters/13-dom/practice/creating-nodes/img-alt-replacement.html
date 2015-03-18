@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            * {
+                font-size: 1.3rem;   
+            }
+            .input-group {
+                margin: 1em;   
+            }
+        </style>
+    </head>
+<body>
+    
+    <div>
+        The <img alt="Cat"> in the <img alt="Hat">.
+    </div>
+    
+    <div class="input-group">
+        <button id="triggerSimple">Replace images with plain text</button>
+        <button id="triggerBold">Replace images with bold text</button>
+    </div>
+    
+    <script>
+        function replaceAllTags(tagName, replacementFunc) {
+            var tagsArray = Array.prototype.slice.call(
+                document.body.getElementsByTagName(tagName), 0);
+            
+            tagsArray.forEach(replacementFunc);
+        }
+        
+        function imageReplaceTestSimple(img) {
+            var textNode = document.createTextNode(img.alt);
+            img.parentNode.replaceChild(textNode, img);                
+        }
+        
+        function imageReplaceTestBold(img) {
+            var boldAltText = document.createElement('b');
+            boldAltText.textContent = img.alt;
+            
+            img.parentNode.replaceChild(boldAltText, img);
+        }
+        
+        // Link trigger, simple test.
+        document
+            .getElementById('triggerSimple')
+            .addEventListener('click', 
+            function() {
+                replaceAllTags('img', imageReplaceTestSimple)
+        });
+        
+        // Link trigger, bold test.
+        document
+            .getElementById('triggerBold')
+            .addEventListener('click', 
+            function() {
+                replaceAllTags('img', imageReplaceTestBold)
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            .query-bar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                
+                height: 3rem;
+                
+                box-shadow: 0 3px 3px #CCC;
+            }
+            
+            .query-bar input,
+            .query-bar button {
+                margin-top: .6rem;
+                margin-left: 1rem;
+                
+                font-size: 1.2rem;   
+            }
+            
+            .highlighted {
+                border: 2px solid #D00;    
+            }
+            
+            .practice {
+                margin-top: 4rem;
+            }
+        </style>
+    </head>
+<body>
+    <div class="query-bar">
+        <input id="queryAllInput" type="text" size="30">
+        <button id="queryAllTrigger">Query All</button>
+        <input id="queryInput" type="text" size="30">
+        <button id="queryTrigger">Query</button>
+    </div>
+    
+    <div class="practice">
+        <h1 class="title">h1.title</h1>
+        <p>
+            Lorem ipsum and some such...
+        </p>
+        <p>
+            Lorem ipsum and some such...
+        </p>
+        <h1>h1</h1>
+        <p>
+            Lorem ipsum and some such...
+        </p>
+        <p>
+            Lorem ipsum and some such...
+        </p>
+    </div>
+    
+    <script>
+        var queryAllTrigger = document.getElementById('queryAllTrigger');
+        var queryTrigger = document.getElementById('queryTrigger');
+        
+        function clearAll() {
+            var queryResults = document.querySelectorAll('.practice *');
+            var resultsArray = Array.prototype.slice.call(queryResults, 0);
+            resultsArray.forEach(function(result) {
+                unHighlight(result);   
+            });
+        }
+        
+        function highlight(elt) {
+            elt.style.border = '2px solid #D00';
+        }
+        
+        function unHighlight(elt) {
+            elt.style.border = 'none';
+        }
+        
+        function queryAllHighlight() {
+            clearAll();
+            
+            var queryAllInput = document.getElementById('queryAllInput').value;
+            var queryResults = document.querySelectorAll(queryAllInput);
+            var resultsArray = Array.prototype.slice.call(queryResults, 0);
+            resultsArray.forEach(function(result) {
+                highlight(result);   
+            });
+        }
+        
+        function queryHighlight() {
+            clearAll();
+            
+            var queryInput = document.getElementById('queryInput').value;
+            var queryResult = document.querySelector(queryInput);
+            
+            highlight(queryResult);   
+        }
+        
+        queryAllTrigger.addEventListener('click', queryAllHighlight);
+        queryTrigger.addEventListener('click', queryHighlight);
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            #octocat {
+                position: relative;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <img id="octocat" src="http://cdn.flaticon.com/png/256/35847.png">
+    </div>
+    
+    <script>
+        var octocat = document.getElementById('octocat');
+        
+        var angle = 0,
+            lastTime = null;
+        
+        function animate(time) {
+            if (lastTime != null) {
+                angle += (time- lastTime) * 0.001;
+            }
+            
+            lastTime = time;
+            
+            octocat.style.top = (Math.sin(angle) * 20) + 50 + 'px';
+            octocat.style.left = (Math.cos(angle) * 200) + 200 + 'px';
+            
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+    </script>
+</body>
+</html>

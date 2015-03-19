@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<body>
+    <p>
+        <span id="naive"></span>
+    </p>
+    <p>
+        <span id="clever"></span>
+    </p>
+    
+    <script>
+        function time(name, action) {
+            var start = Date.now();
+            
+            action();
+            
+            console.log(name, 'took', Date.now() - start, 'ms');
+        }
+        
+        time('naive', function() {
+            var target = document.getElementById('naive'); 
+            while (target.offsetWidth < 2000) {
+                target.appendChild(document.createTextNode('X'));  
+            };
+        });
+        
+        time('clever', function() {
+            var target = document.getElementById('clever'); 
+            
+            target.appendChild(document.createTextNode('XXXXX'));
+            var total = Math.ceil(2000 / (target.offsetWidth / 5));
+            for (var i = 0; i < total; i++) {
+                target.appendChild(document.createTextNode('X'));   
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            body {
+                font-size: 1.3rem;   
+            }
+            
+            .container {
+                margin: 1rem;  
+                border: 1px dashed #DDD;
+                overflow: hidden;
+            }
+            
+            .container .target,
+            .container .output,
+            .container .update {
+                float: left; 
+                margin: .5rem;
+            }
+            
+            .container .target {
+                width: 150px;
+                height: 150px;
+                background-color: #F00;
+            }
+            
+            .container .output {
+                width: 300px;
+            }
+            
+            .container .output {
+                font-size: 1rem;
+                font-family: monospace;
+            }
+            
+            .container button {
+                font-size: 1.1rem;    
+            }
+        </style>
+    </head>
+<body>
+    
+    <div id="primeContainer"></div>
+    
+    <script>
+        function createElt(tagName, options) {
+            var options = options || {};
+            
+            var elt = document.createElement(tagName);    
+            
+            if (options.className) 
+                elt.setAttribute('class', options.className);
+            
+            if (options.id) {
+                elt.id = options.id;
+            }
+            
+            return elt;
+        };
+        
+        var outputProperties = [
+            'offsetWidth',      // Exterior
+            'offsetHeight',
+            'clientWidth',      // Interior
+            'clientHeight',
+        ];
+        
+        function createListItem(list, key, value) {
+            var li = createElt('li');
+            li.textContent = key + ': ' + value;
+            
+            list.appendChild(li);
+            
+            return li;
+        };
+        
+        function updateOutput(target, output) {
+            while (output.firstChild) 
+                output.removeChild(output.firstChild);
+            
+            var ul = createElt('ul');
+            for (var i = 0, x = outputProperties.length; i < x; i++) {
+                var li = createListItem(
+                    ul, outputProperties[i], target[outputProperties[i]]);
+            }
+            output.appendChild(ul);
+            
+            var boundingRect = target.getBoundingClientRect();
+            ul = createElt('ul');
+            for (var key in boundingRect) {
+                if (boundingRect.hasOwnProperty(key)) {
+                    var li = createListItem(ul, key, boundingRect[key]);
+                }
+            }
+            output.appendChild(ul);
+            
+            ul = createElt('ul');
+            createListItem(ul, 'pageXOffset', window.pageXOffset);
+            createListItem(ul, 'pageYOffset', window.pageYOffset);
+            createListItem(ul, 'pageXOffset + bounding.left', 
+                           window.pageXOffset + boundingRect.left);
+            createListItem(ul, 'pageYOffset + bounding.top', 
+                           window.pageYOffset + boundingRect.top);
+            output.appendChild(ul);
+        };
+        
+        function createExampleContainer(id) {
+            var container = createElt('div', {className: 'container'});
+            
+            var target = createElt('div', {className: 'target', id: 'target-'+id});            
+            container.appendChild(target);
+            
+            var output = createElt('div', {className: 'output', id: 'output-'+id});            
+            container.appendChild(output);
+            
+            var update = createElt('div', {className: 'update'});            
+            container.appendChild(update);
+            
+            var updateButton = createElt('button', {id: 'trigger-'+id});
+            updateButton.textContent = 'Update';
+            update.appendChild(updateButton);
+            updateButton.addEventListener('click', function() {
+                updateOutput(target, output);
+            });
+
+            return container;
+        }
+        
+        function createContainers(count) {
+            var primeContainer = document.getElementById('primeContainer');
+            
+            for (var i = 0; i < count; i++) {
+                primeContainer.appendChild(createExampleContainer(i));
+            }
+        }
+        
+        createContainers(10);
+    </script>
+</body>
+</html>

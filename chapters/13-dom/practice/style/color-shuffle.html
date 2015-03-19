@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            #colorBlock {
+                width: 200px;
+                height: 200px;
+                
+                background-color: hsla(0, 50%, 50%, 1);
+                
+                margin: 3rem;
+            }
+            
+            #trigger {                
+                margin-left: 3rem;
+                
+                font-size: 1.3rem;
+            }
+        </style>
+    </head>
+<body>
+    <div id="colorBlock"></div>
+    
+    <button id="trigger">Shuffle</button>
+    
+    <script>
+        var colorBlock = document.getElementById('colorBlock');
+        var trigger = document.getElementById('trigger');
+        
+        function shuffleColor() {
+            var hue = Math.floor(Math.random() * 360);
+            colorBlock.style.backgroundColor = 'hsla(' + hue + ', 50%, 50%, 1)';
+            
+            console.log('New color:', colorBlock.style.backgroundColor);
+        }
+        
+        trigger.addEventListener('click', shuffleColor);
+    </script>
+</body>
+</html>

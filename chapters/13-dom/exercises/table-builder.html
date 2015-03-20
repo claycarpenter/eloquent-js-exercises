@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            #octocat {
+                position: relative;
+            }
+        </style>
+    </head>
+<body>
+    <div id="tableContainer">
+    </div>
+    
+    <script src="mountains.js"></script>
+    <script>
+        function createTable() {
+            var table = document.createElement('table');
+
+            return table;
+        }
+
+        function createTableRow(contents) {
+            var tableRow = document.createElement('tr');
+
+            contents.forEach(function(cell) {
+                 tableRow.appendChild(cell);
+            });
+
+            return tableRow;
+        }
+
+        function createTableHeaders(keys) {
+            var headers = keys.map(function(key) {
+                var header = document.createElement('th');
+                header.textContent = key;
+
+                return header;
+            });
+
+            return headers;
+        }
+
+        function createTableCells(row, keys) {
+            var cells = keys.map(function(key) {
+                var cell = document.createElement('td');
+                cell.textContent = row[key];                    
+
+                return cell;
+            });
+
+            return cells;
+        }
+        
+        function buildTable(data) {
+            if (!data.length)
+                return;
+            
+            var table = createTable();
+            var keys = Object.keys(data[0]);
+            
+            var tableHeaderRow = createTableRow(
+                createTableHeaders(keys)
+            );
+            table.appendChild(tableHeaderRow);
+            
+            var tableCellRow;
+            data.forEach(function(row) {
+                tableCellRow = createTableRow(
+                    createTableCells(row, keys)
+                );
+                
+                table.appendChild(tableCellRow);
+            });
+
+            return table;
+        }
+        
+        var mountainsTable = buildTable(MOUNTAINS);
+        
+        document.getElementById('tableContainer').appendChild(mountainsTable);
+    </script>
+</body>
+</html>

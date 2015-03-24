@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+        </style>
+    </head>
+<body>
+    <div id="testOne">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <div id="testTwo">
+        <nav>
+            <h1>Nav Lorem</h1>
+        </nav>
+        <header>
+            <h1>Header Title Lorem</h1>
+        </header>
+        <article>
+            <h1>Lorem</h1>
+            <p>Lorem ipsum something...</p>
+            <h2>Lorem</h2>
+            <p>Lorem ipsum something...</p>
+            <h1>Lorem</h1>
+            <p>Lorem ipsum something...</p>
+        </article>
+    </div>
+    
+    <script>
+        var WILDCARD = '*';
+        
+        function getElementsByTagName(node, tagName) {
+            //var isWildCard = (tagName == WILDCARD) ? true : false;
+
+//            console.log('Looking at',node.tagName,'for tag',tagName);
+            
+            var results = [],
+                child,
+                childResults;
+            
+            if (node.tagName.toLowerCase() == tagName.toLowerCase()) {
+//                console.log('Found matching tag name');
+                results.push(node);
+            }
+            
+            child = node.firstElementChild;
+            while (child) {
+                childResults = getElementsByTagName(child, tagName);
+                
+//                console.log('Adding child results',childResults,'to current results',results);
+                results = results.concat(childResults);
+//                console.log('New results',results);
+                
+                child = child.nextElementSibling;
+            }
+            
+//            console.log('Search within',node,'results:',results);
+            
+            return results;
+        }
+        
+        console.log('testOne ul test results:', 
+            getElementsByTagName(document.getElementById('testOne'), 'ul'));
+        
+        console.log('testOne li test results:', 
+            getElementsByTagName(document.getElementById('testOne'), 'li'));
+        
+        console.log('testTwo h1 test results:', 
+            getElementsByTagName(document.getElementById('testTwo'), 'h1'));
+    </script>
+</body>
+</html>

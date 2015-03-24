@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 200px;
+                height: 200px;
+                background-color: hsla(12, 100%, 65%, 1);
+                color: hsla(12, 100%, 95%, 1);
+                
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        Click Me!
+    </div>
+    
+    <script>
+        var button = document.querySelector('.example-box');
+        
+        function reporter (event) {
+            switch (event.which) {
+                case 1:
+                    console.log('Left button');
+                    break;
+                case 2:
+                    console.log('Middle button');
+                    break;
+                case 3:
+                    console.log('Right button');
+                    break;
+                default: 
+                    console.log('Unrecognized button press');
+            }
+        }
+        
+        button.addEventListener('mousedown', reporter);
+    </script>
+</body>
+</html>

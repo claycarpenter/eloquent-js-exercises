@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 200px;
+                height: 200px;
+                background-color: hsla(12, 100%, 65%, 1);
+                color: hsla(12, 100%, 95%, 1);
+                
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+            
+            .example-box button {
+                padding: .5rem;
+                font-size: 1.2rem;
+                margin: .5rem;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <button>A</button>
+        <button>B</button>
+        <button>C</button>
+    </div>
+    
+    <script>
+        var container = document.querySelector('.example-box');
+        
+        container.addEventListener('click', function (event) {
+            if (event.target == container) {
+                console.log('Clicking on container does nothing.');
+                return;
+            }
+            
+            if (event.target.nodeName == 'BUTTON') {
+                console.log('Clicked', event.target.textContent);   
+            }
+        });
+    </script>
+</body>
+</html>

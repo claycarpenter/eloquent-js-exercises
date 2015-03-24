@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 200px;
+                height: 200px;
+                background-color: hsla(12, 100%, 65%, 1);
+                color: hsla(12, 100%, 95%, 1);
+                
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <button>
+            Click Me!
+        </button>
+    </div>
+    
+    <script>
+        var button = document.querySelector('.example-box button');
+        var container = document.querySelector('.example-box');
+        
+        container.addEventListener('mousedown', function (event) {
+            console.log('Container handler');
+        });
+        
+        button.addEventListener('mousedown', function (event) {
+            console.log('Button handler');
+            
+            if (event.which == 3) {
+                console.log('Preventing event propagation.');
+                
+                event.stopPropagation();
+            }
+        });
+        
+        button.addEventListener('contextmenu', function () {
+            event.preventDefault();
+            return false;
+        });
+    </script>
+</body>
+</html>

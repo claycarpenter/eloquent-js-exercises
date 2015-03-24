@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            body {
+                color: violet;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <p>This page turns violet when you hold the V key.</p>
+    </div>
+    
+    <script>
+        window.addEventListener('keydown', function (event) {
+            if (event.keyCode == 86) {
+                document.body.style.backgroundColor = 'violet';
+                document.body.style.color = 'white';
+            }
+        });
+        
+        window.addEventListener('keyup', function (event) {
+            document.body.style.backgroundColor = 'white';
+            document.body.style.color = 'violet';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            body {
+                font-family: monospace;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <p>Type something, and check out the console log. Yay.</p>
+    </div>
+    
+    <script>
+        window.addEventListener('keypress', function (event) {
+            console.log('Pressed:', String.fromCharCode(event.charCode));
+        });
+    </script>
+</body>
+</html>

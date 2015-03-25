@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 200px;
+                height: 200px;
+                background-color: hsla(12, 100%, 65%, 1);
+                color: hsla(12, 100%, 95%, 1);
+                
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        Click Me!
+    </div>
+    
+    <script>
+        var box = document.querySelector('.example-box');
+        
+        function createRandomHslaColor () {
+            var hue, saturation, lightness;
+            
+            hue = Math.floor(Math.random() * 360);
+            saturation = Math.floor(Math.random() * 100);
+            lightness = Math.floor(Math.random() * 100);
+            
+            return 'hsla(' + hue + ', ' + saturation + '%, ' + lightness + '%, 1)';
+        }
+        
+        function dblclickHandler () {
+            box.style.color = createRandomHslaColor();
+        }
+        
+        function clickHandler () {
+            box.style.backgroundColor = createRandomHslaColor();
+        }
+        
+        box.addEventListener('click', clickHandler);
+        box.addEventListener('dblclick', dblclickHandler);
+    </script>
+</body>
+</html>

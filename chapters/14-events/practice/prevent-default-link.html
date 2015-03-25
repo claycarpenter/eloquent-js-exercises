@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 200px;
+                height: 200px;
+                background-color: hsla(12, 100%, 65%, 1);
+                color: hsla(12, 100%, 95%, 1);
+                
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <p>
+            Click <a href="http://www.google.com/">here</a> for Google!
+        </p>
+    </div>
+    
+    <p>
+        Click <a href="http://www.google.com/">here</a> for Google!
+    </p>
+    
+    <script>
+        var link = document.querySelector('.example-box a');
+        
+        function interceptor (event) {
+            event.preventDefault();
+            
+            console.log('Intercepted!');
+            
+            return false;
+        }
+        
+        link.addEventListener('click', interceptor);
+    </script>
+</body>
+</html>

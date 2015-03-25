@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+            }
+            
+            .example-box p {
+                height: 50px;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+        <p id="1">
+            Hover over this <strong>paragraph</strong>.
+        </p>
+        <p id="2">
+            Hover over this <strong>paragraph</strong>.
+        </p>
+    </div>
+    
+    <script>
+        var para1 = document.getElementById('1');
+        var para2 = document.getElementById('2');
+        
+        function isInside (node, target) {
+            for (; node != null; node = node.parentNode) {
+                if (node == target) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        para1.addEventListener('mouseover', function (event) {
+            if (!isInside(event.relatedTarget, para1)) {
+                para1.style.color = 'red';
+            }
+        });
+        
+        para1.addEventListener('mouseout', function (event) {
+            if (!isInside(event.relatedTarget, para1)) {
+                para1.style.color = '';
+            }
+        });
+        
+        para2.addEventListener('mouseover', function (event) {
+            para2.style.color = 'red';
+        });
+        
+        para2.addEventListener('mouseout', function (event) {
+            para2.style.color = '';
+        });
+    </script>
+</body>
+</html>

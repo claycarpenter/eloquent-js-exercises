@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .example-box {
+                width: 400px;
+                height: 400px;
+                background-color: white;
+                border: 1px dashed #CCC;
+                margin: 3rem auto;
+                cursor: pointer;
+            }
+            
+            .dot {
+                height: 8px;
+                width: 8px;
+                border-radius: 4px;
+                position: absolute;
+                
+                cursor: pointer;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example-box">
+    </div>
+    
+    <script>
+        var box = document.querySelector('.example-box');
+        
+        function createRandomHslaColor () {
+            var hue, saturation, lightness;
+            
+            hue = Math.floor(Math.random() * 360);
+            saturation = Math.floor(Math.random() * 100);
+            lightness = Math.floor(Math.random() * 100);
+            
+            return 'hsla(' + hue + ', ' + saturation + '%, ' + lightness + '%, 1)';
+        }
+        
+        function createDot (event) {
+            var dot = document.createElement('div');
+            dot.className = 'dot';
+            
+            dot.style.left = (event.pageX - 4) + 'px';
+            dot.style.top = (event.pageY - 4) + 'px';
+            dot.style.backgroundColor = createRandomHslaColor();
+            
+            box.appendChild(dot);
+        }
+        
+        box.addEventListener('click', createDot);
+    </script>
+</body>
+</html>

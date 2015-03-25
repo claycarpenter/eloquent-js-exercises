@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Load/Unload Example</title>
+    <style></style>
+  </head>
+
+  <body>
+    <div>Load/Unload Example</div>
+    <script>
+      window.addEventListener('load', function (event) {
+        alert('Page load event.');
+      });
+      
+      window.addEventListener('beforeunload', function (event) {
+        event.returnValue = 'Are you really sure that you want to leave?';
+      });
+    </script>
+  </body>
+
+</html>

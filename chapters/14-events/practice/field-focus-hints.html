@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Focus Example</title>
+  <style>
+    #help {
+      color: red;
+      font-style: italic;
+      font-size: .8rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <p>
+      Name: <input type="text" data-help="Your full name">
+    </p>
+    <p>
+      Age: <input type="text" data-help="Your age in years">
+    </p>
+    <p id="help"></p>
+  </div>
+
+  <script>
+    var help = document.querySelector('#help'),
+        fields = document.querySelectorAll('input');
+    
+    for (var i = 0; i < fields.length; i++) {
+       var field = fields[i];
+       
+       field.addEventListener('focus', function (event) {
+         var text = event.target.getAttribute('data-help');
+         help.textContent = text;
+       });
+       
+       field.addEventListener('blur', function (event) {
+         help.textContent = '';
+       });
+    }
+  </script>
+</body>
+
+</html>

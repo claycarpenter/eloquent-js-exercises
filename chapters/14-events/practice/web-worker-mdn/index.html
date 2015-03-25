@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .result {
+                color: #0C0;
+        </style>
+    </head>
+<body>
+    <div>
+        <form>
+            <label for="num1">Multiply number 1:</label>
+            <input id="num1" type="text" value="0">
+        
+            <label for="num2">Multiply number 2:</label>
+            <input id="num2" type="text" value="0">
+        </form>
+        <button id="trigger">Calc</button>
+    </div>
+    
+    
+    <p class="result"></p>
+    
+    <script>
+        var num1 = document.querySelector('#num1');
+        var num2 = document.querySelector('#num2');
+        var result = document.querySelector('.result');
+        
+        if (Boolean(window.Worker)) {
+            var worker = new Worker('worker.js');
+            
+            trigger.addEventListener('click', function (event) {
+                worker.postMessage([num1.value, num2.value]);
+                
+                console.log('Message posted to worker.'); 
+            });
+            
+            worker.onmessage = function (e) {
+                result.textContent = e.data;
+                
+                console.log('Message received from worker.');   
+            }
+        }
+    </script>
+</body>
+</html>

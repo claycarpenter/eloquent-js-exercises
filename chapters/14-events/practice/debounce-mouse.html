@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .output {
+                font-family: monospace;
+                font-size: 1.25rem;
+            }
+        </style>
+    </head>
+<body>
+    <div class="output">No mouse!</div>
+    
+    <script>
+        var output = document.querySelector('.output');
+        
+        var scheduled = false,
+            lastEvent;
+        
+        function displayCoords (event) {
+            output.textContent = 'Mouse at ' + event.pageX + ', ' + event.pageY;   
+        }
+        
+        window.addEventListener('mousemove', function (event) {
+            lastEvent = event;
+            
+            if (!scheduled) {
+                scheduled = true;
+                
+                setTimeout(function () {
+                    scheduled = false;
+                    
+                    displayCoords(lastEvent);
+                }, 250);
+            }
+        });
+    </script>
+</body>
+</html>

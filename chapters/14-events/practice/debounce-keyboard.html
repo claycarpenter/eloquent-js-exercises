@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            
+            .container {
+                width: 800px;
+                overflow: hidden;
+            }
+            
+            .code-box {
+                border: 1px solid #CCC;
+                padding: .5rem;
+                font-family: monospace;
+                font-size: 1.1rem;
+                
+                min-height: 6rem;
+                width: 44%;
+                margin: 2rem 3%;
+                float: left;
+            }
+        </style>
+    </head>
+<body>
+    <div class="container">
+        <textarea class="code-box"></textarea>        
+    </div>
+    
+    <script>
+        var textarea = document.querySelector('textarea');
+        
+        var timeout;
+        
+        textarea.addEventListener('keydown', function () {
+            clearTimeout(timeout);
+            
+            timeout = setTimeout(function () {
+                console.log('You stopped typing.'); 
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

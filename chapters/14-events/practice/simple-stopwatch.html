@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            .timer-output {
+                font-family: monospace;
+                font-size: 1.5rem;
+            }
+        </style>
+    </head>
+<body>
+    <p class="timer-output">0</p>
+    <button id="toggleButton">Start</button>
+    
+    <script>
+        var toggleButton = document.querySelector('#toggleButton'),
+            timerOutput = document.querySelector('.timer-output');
+        
+        var updateInterval = 200, // ms 
+            isRunning = false,
+            intervalHandle,
+            accumulatedTime = 0,
+            lastTime; 
+        
+        function updateTime () {
+            console.log('Tick...');
+            
+            var current = Date.now();
+            
+            accumulatedTime += current - lastTime;
+            
+            timerOutput.textContent = Math.floor(accumulatedTime / 1000) + ' seconds';
+            
+            lastTime = current;
+        }
+
+        toggleButton.addEventListener('click', function (event) {
+            isRunning = !isRunning;
+            
+            if (isRunning) {
+                lastTime = Date.now();
+                intervalHandle = setInterval(updateTime, updateInterval);
+            } else {
+                clearInterval(intervalHandle);
+                
+                updateTime();
+            }
+            
+            toggleButton.textContent = isRunning ? 'Stop' : 'Start';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <p class="result"></p>
+    
+    <script>
+        var colors = [
+            'blue',
+            'red',
+            'orange',
+            'green'
+        ];
+        
+        var interval = 2000; // ms
+        
+        function changeBodyColor () {
+            var newColorIdx = Math.floor(Math.random() * colors.length);
+            document.body.style.backgroundColor = colors[newColorIdx];
+            
+            setTimeout(changeBodyColor, interval);
+        };
+        
+        changeBodyColor();
+    </script>
+</body>
+</html>

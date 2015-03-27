@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            
+            .container {
+                width: 800px;
+                overflow: hidden;
+            }
+            
+            .code-box {
+                border: 1px solid #CCC;
+                padding: .5rem;
+                font-family: monospace;
+                font-size: 1.1rem;
+                
+                min-height: 6rem;
+                width: 44%;
+                margin: 2rem 3%;
+                float: left;
+            }
+            
+            .code-box pre {
+                margin: 0;
+            }
+            
+            textarea.code-box {
+                outline: none;
+                resize: vertical;
+            }
+            
+            .keyword {
+                font-weight: bold;
+                color: hsla(223, 100%, 61%, 1);
+            }
+        </style>
+    </head>
+<body>
+    <div class="container">
+        <textarea class="code-box input"></textarea>
+        <div class="code-box result"></div>
+    </div>
+    
+    <script>
+        var languagePatterns = {    
+            javascript: /\b(function|return|var|null|undefined)\b/g,
+            java: /\b(class|public|private|return|void)\b/g
+        };
+        
+        var input = document.querySelector('.input'),
+            result = document.querySelector('.result');
+        
+        function highlightCodeBlock(codeText) {
+            var keywords = languagePatterns.javascript;            
+            var code = document.createElement('pre');
+            
+            var match, pos = 0;
+            while (match = keywords.exec(codeText)) {
+                var before = codeText.slice(pos, match.index);
+                
+                code.appendChild(document.createTextNode(before));
+                
+                var strong = document.createElement('span');
+                strong.appendChild(
+                    document.createTextNode(match[0]));
+                strong.className = 'keyword';
+                
+                code.appendChild(strong);
+                
+                pos = keywords.lastIndex;
+            }
+            
+            var after = codeText.slice(pos);
+            code.appendChild(document.createTextNode(after));
+            
+            return code;
+        }
+        
+        var updateInterval = 500, // ms 
+            lastEvent,
+            isScheduled; 
+        
+        function updateSyntaxHighlight () {
+            var codeText = input.value;
+            
+            console.log('Code text:', codeText);
+            
+            var highlighted = highlightCodeBlock(input.value); 
+            
+            while (result.firstChild) {
+                result.removeChild(result.firstChild);   
+            }
+            
+            result.appendChild(highlighted);
+        }
+        
+        input.addEventListener('keyup', function (event) {
+            console.log('key event');
+            
+            if (!isScheduled) {
+                // Set scheduled flag; other event fires will be ignored
+                // until update job is run.
+                isScheduled = true;
+                
+                console.log('Scheduling update.');
+                
+                setTimeout(function () {
+                    // Reset scheduled flag.
+                    isScheduled = false;
+                    
+                    // Update syntax highlighted output.
+                    updateSyntaxHighlight();
+                }, updateInterval);
+            }
+        });
+    </script>
+</body>
+</html>

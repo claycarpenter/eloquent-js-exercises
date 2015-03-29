@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Censored Keyboard</title>
+    <style></style>
+  </head>
+
+  <body>
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" size="35"> 
+    </div>
+    <script>
+      var results = document.querySelectorAll('input[type=text]');
+      var textInputs = Array.prototype.slice.call(results, 0);
+      var restrictedChars = ['q', 'w', 'x'];
+      
+      function ignoreKeys (event) {
+        var value = String.fromCharCode(event.keyCode).trim();
+        
+        if (!value.length) return;
+        
+        console.log('.keyCode:', event.keyCode, '; string value:', value);
+        
+        var isAllowed = restrictedChars.every(function(restrictedChar) {
+          return restrictedChar !== value.toLowerCase();
+        });
+        
+        //console.log('isAllowed:', isAllowed);
+        
+        if (!isAllowed) {
+          event.preventDefault();
+        }
+      }
+      
+      textInputs.forEach(function(textInput) {
+        textInput.addEventListener('keypress', ignoreKeys);  
+      });
+    </script>
+  </body>
+
+</html>

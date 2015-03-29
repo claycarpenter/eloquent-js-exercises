@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+        .tab-container,
+        .tab-contents,
+        .tab-panel {
+            padding: 0;
+        }
+        
+        .tab-contents {
+            border-bottom: 1px solid #DDD;
+            border-left: 1px solid #DDD;
+            border-right: 1px solid #DDD;
+        }
+        
+        .tab-row {
+            padding: 0;
+            margin: 0;
+            border-bottom: 1px solid #DDD;
+        }
+      
+        .tab-row li {
+            list-style: none;
+            display: inline-block;
+            background-color: hsla(0, 0%, 90%, 1);
+            margin: 0;
+            padding: .3rem;
+            cursor: pointer;
+        }
+        
+        .tab-row .active {
+            background-color: hsla(0, 0%, 80%, 1);
+        }
+        
+        #tabsExample {
+            width: 400px;   
+        }
+        
+        .tab-panel.visible {
+            display: block;    
+        }
+        
+        .tab-panel.hidden {
+            display: none;
+        }
+    </style>
+  </head>
+
+  <body>
+    <div id="tabsExample" class="tab-container">
+        <ul class="tab-row">
+            <li data-tab-idx="1">Tab One</li>
+            <li data-tab-idx="2">Tab Two</li>
+            <li data-tab-idx="3">Tab 3</li>
+            <li data-tab-idx="4">Tab Four</li>
+        </ul>
+        <div class="tab-contents">
+            <div class="tab-panel visible" data-tab-idx="1">Pathway to a better life, dignity The Elders future reduce child mortality international development approach deep engagement prosperity. Nelson Mandela, innovation, emergent; gender equality strengthen democracy involvement harness; agenda transform theory of social change sharing economy collaborative cities recognition storytelling. Dialogue, breakthrough insights progress world problem solving maintain fight against oppression policy dialogue investment community frontline. Activist, meaningful cornerstone, our grantees and partners safeguards change movements Bloomberg provide. Affordable health care crowdsourcing volunteer eradicate improving quality best practices dedicated donation communities.</div>
+            <div class="tab-panel hidden" data-tab-idx="2">Social good evolution; development advocate, social innovation rural diversification inclusive capitalism, vulnerable citizens foster results UNHCR turmoil. Refugee, new approaches synthesize forward-thinking urban, conflict resolution celebrate shift, solve Aga Khan fighting poverty global health. Life-saving rural development; implementation working families, political, community health workers; pride fundraise treatment agency clean water economic security innovate youth. Humanitarian relief public-private partnerships affiliate cross-agency coordination Jane Addams disruptor technology visionary. Developing nations end hunger; accelerate reproductive rights; combat poverty compassion save lives empowerment combat malaria truth challenges. NGO freedom revitalize gun control equity non-partisan, social analysis; advancement incubation nutrition readiness. Giving country social human-centered design measures sustainable future environmental medical prevention; global pursue these aspirations foundation. </div>
+            <div class="tab-panel hidden" data-tab-idx="3">Positive social change; public service long-term aid raise awareness sanitation globalization campaign social responsibility cooperation. Working alongside Bill and Melinda Gates social movement Martin Luther King Jr. disrupt civil society diversity care necessities overcome injustice. Enabler gender rights collaborative, underprivileged justice committed. Oxfam small-scale farmers process citizens of change maximize free expression, promising development Ford Foundation safety altruism voice connect grantees. Cesar Chavez, tackling carbon rights nonviolent resistance; governance Kony 2012 vulnerable population social impact democracy. Lifting people up empower education, public institutions, enable honesty design thinking disruption free-speech time of extraordinary change.</div>
+            <div class="tab-panel hidden" data-tab-idx="4">United Nations; experience in the field, rights-based approach momentum nonprofit Action Against Hunger minority challenges of our times. Participatory monitoring Bono health, international microloans, impact social worker, significant policy relief. Asylum, proper resources, healthcare making progress, transformative 501(c)(3), facilitate poverty medical supplies; peace, Peace Corps developing fellows plumpy'nut.</div>
+        </div>
+    </div>
+      
+    <script>
+        var TAB_INDEX_ATTR = 'data-tab-idx';
+        var tabRow = document.querySelector('#tabsExample .tab-row');
+        
+        /*
+        TODO:
+        - Present active tab
+        - Support creating these tabs from existing content?
+        */
+        
+        function showTabPanel (targetTabIdx) {
+            var hidePanel = document.querySelector('.tab-contents .tab-panel.visible');
+            var showPanel = document.querySelector('.tab-contents div[data-tab-idx="' + targetTabIdx + '"]');
+
+            hidePanel.className = 'tab-panel hidden';
+
+            showPanel.className = 'tab-panel visible';   
+        }
+        
+        function updateTabs (targetTabIdx) {
+            var tabs = document.querySelectorAll('.tab-row li');
+            
+            for (var i = 0; i < tabs.length; i++) {
+                var tab = tabs[i],
+                    idxAttr = tab.getAttribute(TAB_INDEX_ATTR);
+                
+                if (idxAttr && (Number(idxAttr) == targetTabIdx)) {
+                    tab.className = 'active';
+                } else {
+                    tab.className = '';
+                }
+            }
+        }
+        
+        function onClickTabRow (event) {
+            var target = event.target;
+            if (target && target.hasAttribute(TAB_INDEX_ATTR)) {
+                // Target is a tab with a defined index value.
+                
+                var targetTabIdx = target.getAttribute(TAB_INDEX_ATTR);
+                console.log('Showing tab', targetTabIdx);
+                
+                
+                // Show the targeted tab panel (and hide the currently 
+                // showing panel).
+                showTabPanel(targetTabIdx);
+                
+                updateTabs(targetTabIdx);
+            }
+        }
+        
+        tabRow.addEventListener('click', onClickTabRow);
+    </script>
+  </body>
+</html>

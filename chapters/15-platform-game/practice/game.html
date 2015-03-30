@@ -14,8 +14,10 @@
             .background-cell {
                 padding: 0;
                 
+/*
                 height: 20px;
                 width: 20px;
+*/
                 
                 /*
                 rowTd.style.height = this.SCALE + 'px';
@@ -166,11 +168,15 @@
         }
         Coin.prototype.type = 'coin';
         
-        function elt (name, className) {
+        function elt (name, classList) {
             var elt = document.createElement(name);
             
-            if (className) {
-                elt.className = className;
+            if (classList && typeof classList === 'string') {
+                elt.className = classList;
+            } else if (classList && classList instanceof Array) {
+                classList.forEach(function(className) {
+                    elt.classList.add(className); 
+                });
             }
             
             return elt;
@@ -193,29 +199,30 @@
             table.style.width = this.level.width * this.SCALE + 'px';
             table.style.height = this.level.height * this.SCALE + 'px';
             
+            var display = this;
+            
             this.level.grid.forEach(function (row) {
                 //console.log('Adding row');
                 var rowElt = elt('tr');
                 
                 rowElt.style.height = this.SCALE + 'px';
-                rowElt.style.width = this.level.width * this.SCALE + 'px';
 
                 // Table cell only displays with content?
                 
                 row.forEach(function (type) {
                     //console.log('Adding td');
-                    var rowTd = elt('td', type);
+                    var rowTd = elt('td', [type, 'background-cell']);
                     
+                    rowTd.style.height = this.SCALE + 'px';
+                    rowTd.style.width = this.SCALE + 'px';
                     
-                    
-                    rowTd.classList.add('background-cell');
-                    
-                    //rowTd.textContent = '_';
+//                    rowTd.classList.add('background-cell');
+
                     rowElt.appendChild(rowTd); 
-                });
+                }, this);
                 
                 table.appendChild(rowElt);
-            });
+            }, this);
             
             return table;
         }

@@ -353,6 +353,7 @@
         }
 
         function DomDisplay(parent, level) {
+            this.parent = parent;
             this.wrap = parent.appendChild(elt('div', 'game'));
             this.level = level;
             
@@ -448,7 +449,14 @@
         };
         
         DomDisplay.prototype.clear = function () {
-            this.wrap.parentNode.removeChild(this.wrap);
+            this.parent.removeChild(this.wrap);
+        };
+        
+        DomDisplay.prototype.showGameOver = function () {
+            var gameOverContainer = elt('div','game-over');
+            gameOverContainer.textContent = 'Game over!';
+            
+            this.parent.appendChild(gameOverContainer);  
         };
         
         var arrowCodes = {
@@ -506,7 +514,11 @@
                     display.clear();
                     
                     if (andThen) {
-                        andThen(level.status);
+                        var showGameOver = andThen(level.status);
+                        
+                        if (showGameOver) {
+                            display.showGameOver();   
+                        }
                     }
                     
                     return false;
@@ -515,25 +527,35 @@
         }
         
         function runGame (plans, Display) {
+            var lives = 1;
+            
             function startLevel(n) {
+                console.log('Starting level with', lives, lives > 1 ? 'lives' : 'life');
+                
                 runLevel(new Level(plans[n]), Display, function (status) {
+                    var showGameOver = false;
+                    
                     if (status == 'lost') {
-                        startLevel(n);
+                        lives = lives - 1;
+                        
+                        if (lives > 0) {
+                            startLevel(n);
+                        } else {                            
+                            console.log('You lose!');
+                            showGameOver = true;
+                        }
                     } else if (n < plans.length - 1) {
                         startLevel(n + 1);
                     } else {
                         console.log('You win!');
                     }
+                    
+                    return showGameOver;
                 });
             }
             
             startLevel(0);
         }
-                        
-        
-//        var level = new Level(simpleLevelPlan);
-//        console.log('New level:', level.width, 'by', level.height);
-//        var display = new DomDisplay(document.body, level);
         
         runGame(GAME_LEVELS, DomDisplay);
     </script>

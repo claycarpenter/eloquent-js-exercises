@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Example</title>
+  <style>
+    canvas {
+      box-shadow: 0 0 7px 1px #aaa;
+      width: 500;
+      height: 300;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <p>Canvas</p>
+    <canvas></canvas>
+  </div>
+  <script>
+    function Vector(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    var canvas = document.querySelector('canvas');
+    var cx = canvas.getContext('2d');
+
+    var begin = new Vector(10, 90),
+      end = new Vector(90, 90),
+      control = new Vector(50, 10);
+
+    cx.strokeStyle = 'red';
+    cx.beginPath();
+    cx.arc(control.x, control.y, 2, 0, 7);    
+    cx.stroke();
+
+    cx.strokeStyle = 'gray';
+    cx.beginPath();
+    cx.moveTo(begin.x, begin.y);
+    cx.quadraticCurveTo(control.x, control.y, end.x, end.y);
+
+    cx.stroke();
+  </script>
+</body>
+
+</html>

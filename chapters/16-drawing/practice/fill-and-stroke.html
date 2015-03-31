@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <p>Canvas fill and stroke operations.</p>
+        
+        <canvas></canvas>
+        
+        <p>After canvas.</p>
+    </div>
+    
+    <script>
+        var canvas = document.querySelector('canvas');
+        var cx = canvas.getContext('2d');
+        
+        cx.strokeStyle = 'blue';
+        cx.strokeRect(5, 5, 50, 50);
+        cx.lineWidth = 5;
+        cx.strokeRect(135, 5, 50, 50);
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <p>Path fill</p>
+        <canvas id='fill'></canvas>
+    </div>
+    
+    <div>
+        <p>Path stroke</p>
+        <canvas id='stroke'></canvas>
+    </div>
+    
+    <script>
+        function drawPath (selector) {
+            var canvas = document.querySelector(selector);
+            var cx = canvas.getContext('2d');
+        
+            cx.beginPath();
+
+            cx.moveTo(50, 10);
+            cx.lineTo(10, 70);
+            cx.lineTo(90, 70);
+            
+            return cx;
+        }
+        
+        var cxFill = drawPath('#fill');
+        cxFill.fill();
+        
+        var cxStroke = drawPath('#stroke');
+        cxStroke.stroke();
+    </script>
+</body>
+</html>

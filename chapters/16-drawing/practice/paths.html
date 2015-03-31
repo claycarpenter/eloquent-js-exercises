@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <canvas></canvas>
+    </div>
+    
+    <script>
+        var canvas = document.querySelector('canvas');
+        var cx = canvas.getContext('2d');
+        
+        cx.beginPath();
+        
+        var randomColor = Math.floor(Math.random() * 360);
+        cx.strokeStyle = 'hsla(' + randomColor + ', 75%, 75%, 1)';
+        
+        for (var y = 10; y < 100; y += 10) {
+            cx.moveTo(10, y);
+            cx.lineTo(90, y);
+        };
+        
+        cx.stroke();
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas width="700" height="700"></canvas>
+    </div>
+    <script>
+        var cx = document.querySelector('canvas').getContext('2d');
+        
+        function branch (length, angle, scale) {
+            cx.fillRect(0, 0, 1, length);
+            if (length < 8) {
+                // Line length minimum reached; stop drawing.
+                return;
+            }
+            
+            cx.save();
+            
+            cx.translate(0, length);
+            cx.rotate(-angle);
+            branch(length * scale, angle, scale);
+            cx.rotate(2 * angle);
+            branch(length * scale, angle, scale);
+            
+            cx.restore();
+        }
+        
+        cx.translate(300, 30);
+        branch(60, 0.75, .8);
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+/*
+            width: 400px;
+            height: 400px;
+*/
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas width="400" height="400"></canvas>
+    </div>
+    <script>
+        function Vector (x, y) {
+            this.x = x; this.y = y;
+        }
+        
+        var results = [
+            {name: "Satisfied", count: 1043, color: "lightblue"},
+            {name: "Neutral", count: 563, color: "lightgreen"},
+            {name: "Unsatisfied", count: 510, color: "pink"},
+            {name: "No comment", count: 175, color: "silver"}
+        ];
+        
+        var cx = document.querySelector('canvas').getContext('2d');
+
+        var total = results.reduce(function (sum, choice) {
+            return sum + choice.count;
+        }, 0);
+        
+        // Start at the top.
+        var currentAngle = -0.5 * Math.PI,
+            center = new Vector(200, 200);
+        
+        results.forEach(function (result) {
+            var sliceAngle = (result.count / total) * 2 * Math.PI;
+            
+            cx.beginPath();
+            cx.arc(center.x, center.y, 100, currentAngle, currentAngle + sliceAngle);
+            currentAngle = currentAngle + sliceAngle;
+            cx.lineTo(center.x, center.y);
+            cx.fillStyle = result.color;
+            cx.fill();
+        });
+    </script>
+  </body>
+
+</html>

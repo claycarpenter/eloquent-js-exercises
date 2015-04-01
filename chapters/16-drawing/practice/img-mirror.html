@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas width="300" height="300"></canvas>
+    </div>
+    <script>
+        // http://lorempixel.com/output/technics-q-c-100-100-4.jpg
+        
+        var cx = document.querySelector('canvas').getContext('2d');
+        var img = document.createElement('img');
+        img.src = 'http://lorempixel.com/output/technics-q-c-100-100-4.jpg';
+        
+        function flipHorizontally (context, around) {
+            context.translate(around, 0);
+            context.scale(-1, 1);
+            context.translate(-around, 0);
+        }
+        
+        img.addEventListener('load', function () {
+            cx.drawImage(img, 0, 0);
+            
+            flipHorizontally(cx, 150);
+            
+            cx.drawImage(img, 100, 0);
+        });
+    </script>
+  </body>
+
+</html>

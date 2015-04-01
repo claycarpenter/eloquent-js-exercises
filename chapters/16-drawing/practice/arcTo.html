@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+            width: 500;
+            height: 300;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas></canvas>
+    </div>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var cx = canvas.getContext('2d');
+
+        cx.beginPath();
+        
+        cx.moveTo(10, 10);
+        
+        // Control: 90, 10
+        // Destination: 90, 90
+        // Radius: 20
+        cx.arcTo(90, 10, 90, 90, 20);
+        
+        cx.moveTo(10, 10);
+        
+        cx.arcTo(90, 10, 90, 90, 80);
+
+        cx.stroke();
+    </script>
+  </body>
+
+</html>

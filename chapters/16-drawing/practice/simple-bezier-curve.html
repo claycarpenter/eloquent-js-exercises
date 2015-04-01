@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+            width: 500;
+            height: 300;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas></canvas>
+    </div>
+    <script>
+        var canvas = document.querySelector('canvas');
+        var cx = canvas.getContext('2d');
+
+        cx.beginPath();
+        cx.moveTo(10, 90);
+        cx.bezierCurveTo(10, 10, 90, 10, 50, 90);
+        cx.lineTo(90, 10);
+        cx.lineTo(10, 10);
+        cx.closePath();
+        cx.stroke();
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas width="300" height="300"></canvas>
+    </div>
+    <script>
+        var cx = document.querySelector('canvas').getContext('2d');
+        
+        cx.scale(3, .5);
+        cx.beginPath();
+        cx.arc(50, 50, 40, 0, 7);
+        cx.lineWidth = 3;
+        cx.stroke();
+    </script>
+  </body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Translate, Rotate</p>
+      <canvas id="c1" width="300" height="300"></canvas>
+    </div>
+    <div>
+      <p>Rotate, Translate</p>
+      <canvas id="c2" width="300" height="300"></canvas>
+    </div>
+    <script>
+        var cx1 = document.querySelector('#c1').getContext('2d');
+        
+        cx1.translate(50, 50);
+        cx1.rotate(0.1 * Math.PI);
+        cx1.arc(50, 50, 40, 0, 7);
+        cx1.stroke();
+        
+        var cx2 = document.querySelector('#c2').getContext('2d');
+        
+        cx2.rotate(0.1 * Math.PI);
+        cx2.translate(50, 50);
+        cx2.arc(50, 50, 40, 0, 7);
+        cx2.stroke();
+    </script>
+  </body>
+
+</html>

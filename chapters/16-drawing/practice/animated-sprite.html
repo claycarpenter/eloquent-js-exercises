@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Example</title>
+    <style>
+          canvas {
+            box-shadow: 0 0 7px 1px #aaa;
+          }
+        </style>
+  </head>
+
+  <body>
+    <div>
+      <p>Canvas</p>
+      <canvas width="300" height="300"></canvas>
+    </div>
+    <script>
+        // http://lorempixel.com/output/technics-q-c-100-100-4.jpg
+        
+        function Rect (x, y, width, height) {
+            this.x = x; this.y = y; this.width = width; this.height = height;
+        }
+        
+        var cx = document.querySelector('canvas').getContext('2d');
+        var img = document.createElement('img');
+        img.src = 'player.png';
+        
+        var spriteRect = new Rect(0, 0, 24, 30);
+        
+        img.addEventListener('load', function () {
+            var cycle = 0;
+            
+            console.log('Hi?');
+            
+            setInterval(function () {
+                cx.clearRect(
+                    spriteRect.x, spriteRect.y, spriteRect.width, spriteRect.height);
+
+                cx.drawImage(img,
+                    // Source rect
+                    spriteRect.width * cycle, 0, spriteRect.width, spriteRect.height,
+                    // Dest rect
+                    0, 0, spriteRect.width, spriteRect.height);
+                
+                cycle = (cycle + 1) % 8;
+            }, 120);
+        });
+    </script>
+  </body>
+
+</html>

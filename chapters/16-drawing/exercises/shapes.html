@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            canvas {
+                box-shadow: 0 0 7px 1px #aaa;
+            }
+            
+            p {
+                font-size: 1.3rem;
+                font-family: sans-serif;
+            }
+            
+            .example {
+                width: 220px;
+                float: left;
+            }
+        </style>
+    </head>
+<body>
+    <div class="example" id='trapezoid'>
+        <p>Trapezoid</p>
+        <canvas width="200" height="200"></canvas>
+    </div>
+    <div class="example" id="diamond">
+        <p>Diamond</p>
+        <canvas width="200" height="200"></canvas>
+    </div>
+    <div class="example" id="zigzag">
+        <p>Zig-Zag</p>
+        <canvas width="200" height="200"></canvas>
+    </div>
+    <div class="example" id="spiral">
+        <p>Spiral</p>
+        <canvas width="200" height="200"></canvas>
+    </div>
+    <div class="example" id="star">
+        <p>Star</p>
+        <canvas width="200" height="200"></canvas>
+    </div>
+    
+    <script>
+        function Vector (x, y) {
+            this.x = x; this.y = y;
+        }
+        
+        function drawPoints(context, points, closePath) {
+            var start = points[0],
+                current = null;
+            
+            // Move to start point.
+            context.moveTo(start.x, start.y);
+            
+            // Draw each point after the first point.
+            for (var i = 1, x = points.length; i < x; i++) {
+                current = points[i];
+                context.lineTo(current.x, current.y);
+            }
+            
+            // If the path should be automatically closed, draw a
+            // line back to the start point.
+            if (closePath) {
+                context.lineTo(start.x, start.y);
+            }
+            
+            // Stroke path.
+            context.stroke();
+        }
+        
+        function drawTrapezoid (context, origin, topLength, bottomLength, height) {
+            var longest = Math.max(topLength, bottomLength);
+            
+            var topOffset = (longest - topLength) / 2,
+                bottomOffset = (longest - bottomLength) / 2;
+            
+            var points = [
+                new Vector(origin.x + topOffset, origin.y),             // top-left
+                new Vector(origin.x + topOffset + topLength, origin.y),             // top-right
+                new Vector(origin.x + bottomOffset + bottomLength, origin.y + height), // bottom-right
+                new Vector(origin.x + bottomOffset, origin.y + height)  // bottom-left
+            ];
+            
+            drawPoints(context, points, true);
+        }
+        
+        function drawDiamond (context, origin, length) {
+            context.save();
+            
+            var translateX = context.canvas.clientWidth / 2,
+                translateY = -(context.canvas.clientHeight / 2) + length;
+            
+            console.log('Translating by:',translateX,',',translateY);
+            
+            context.translate(translateX, translateY);
+            context.rotate(Math.PI * 1/4);
+            
+            drawTrapezoid(context, origin, length, length, length);
+            
+            context.restore();
+        }
+        
+           
+        // Draw series of points
+        var testPoints = [
+            new Vector(50, 50),
+            new Vector(100, 50),
+            new Vector(100, 100),
+            new Vector(50, 100)
+        ];
+        //drawPoints(context, testPoints, true);
+        
+        var trapCtx = document.querySelector('#trapezoid canvas').getContext('2d');
+        drawTrapezoid(trapCtx, new Vector(30, 30), 40, 60, 35);
+        drawTrapezoid(trapCtx, new Vector(30, 130), 60, 40, 50);
+        
+        var diamondCtx = document.querySelector('#diamond canvas').getContext('2d');
+        drawDiamond(diamondCtx, new Vector(100, 100), 30);
+    </script>
+</body>
+</html>

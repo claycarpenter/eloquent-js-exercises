@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <label for="targetUrl">Target URL:</label>
+        <input type="text" id="targetUrl">
+        <button id="triggerLoad">Load</button>
+    </div>
+    
+    <div>
+        <h3>Result</h3>
+        <div id="resultContainer"></div>
+    </div>
+    
+    <script>
+        function get(url) {
+            return new Promise(function (succeed, fail) {
+                console.log('Preparing request to GET:', url);
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.addEventListener('load', function () {
+                   if (xhr.status < 300) {
+                       succeed(xhr.responseText);
+                   } else {
+                       fail(xhr.statusText);
+                   }
+                });
+                
+                xhr.addEventListener('error', function () {
+                    fail(new Error('Complete network failure.'));
+                });
+
+                console.log('Executing request.');
+                xhr.send(null);
+            });
+        }
+        
+        function getJson (url) {
+            return get(url).then(JSON.parse);   
+        }
+        
+        function logJsonResult (jsonObject) {
+            console.log('JSON:', jsonObject);
+            
+            return jsonObject;   
+        }
+        
+        function displayJsonResult (jsonObject) {
+            var resultContainer = document.getElementById('resultContainer');
+            
+            var pre = resultContainer.appendChild(
+                        document.createElement('pre'));
+            
+            pre.textContent = JSON.stringify(jsonObject);
+            
+            return jsonObject;
+        }
+        
+        function errorHandler (error) {
+            if (error instanceof Error) {
+                console.log('Error details:', error.message);  
+            } else {
+                console.log('Error status text:', error);   
+            }
+        }
+        
+        function onClickTriggerLoad (event) {
+            // Get the target URL.
+            var targetUrl = document.getElementById('targetUrl').value;
+            
+            getJson(targetUrl)
+                .then(logJsonResult)
+                .then(displayJsonResult)
+                .catch(errorHandler);
+        }
+        
+        document.getElementById('triggerLoad')
+            .addEventListener('click', onClickTriggerLoad);
+    </script>
+</body>
+</html>

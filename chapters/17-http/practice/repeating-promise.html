@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        var randomPromise = new Promise(function (succeed, fail) {
+            // Execute immediately.
+            var rawResult = (Math.random() * 1),
+                result = Math.round(rawResult);
+            
+            console.log('Raw result:', rawResult, 'Result:', result, 'as Boolean:', Boolean(result));
+            
+            if (result) {
+                succeed(rawResult);
+            } else {
+                fail(rawResult);
+            }
+        });
+        
+        setInterval( function () {
+            randomPromise.then(function (result) {
+                console.log('Success!', result);
+            }).then(function (result) {
+                console.log('Second then...'); 
+            }).catch(function (error) {console.log('Error?');});
+        }, 500);
+    </script>
+</body>
+</html>

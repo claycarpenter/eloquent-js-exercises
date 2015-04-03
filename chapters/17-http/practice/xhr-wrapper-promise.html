@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        function get(url) {
+            return new Promise(function (succeed, fail) {
+                console.log('Preparing request to GET:', url);
+                
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.addEventListener('load', function () {
+                   if (xhr.status < 300) {
+                       succeed(xhr.responseText);
+                   } else {
+                       fail(xhr.statusText);
+                   }
+                });
+                
+                xhr.addEventListener('error', function () {
+                    fail(new Error('Complete network failure.'));
+                });
+
+                console.log('Executing request.');
+                xhr.send(null);
+            });
+        }
+        
+        function errorHandler (error) {
+            console.log('Error?');
+            
+            if (error instanceof Error) {
+                console.log('Error details:', error.message);  
+            } else {
+                console.log('Error status text:', error);   
+            }
+        }
+        
+        function firstSuccessHandler (result) {
+            console.log('Success!', result);
+            
+            return result;
+        }
+        
+        function secondSuccessHandler (result) {
+            console.log('Second success!', result);   
+            
+            return result;
+        }
+        
+        var workingPromise = get('data.json');
+        
+        workingPromise
+            .then(firstSuccessHandler)
+            .then(secondSuccessHandler)
+            .catch(errorHandler);
+        
+        var failingPromise = get('missing-data.json');
+        
+        failingPromise
+            .then(firstSuccessHandler)
+            .then(secondSuccessHandler)
+            .catch(errorHandler);
+        
+        var errorThrowingPromise = get('http://www.fake.fake');
+        
+        errorThrowingPromise
+            .then(firstSuccessHandler)
+            .then(secondSuccessHandler)
+            .catch(errorHandler);
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        var req = new XMLHttpRequest();
+        
+        // HTTP Method, target URL, async flag
+        req.open('GET', 'data.json', false);
+        
+        // No body needed for GET request
+        req.send(null);
+        
+        console.log('Status code:', req.status);
+        console.log('Status txt:', req.statusText);
+        console.log('Content-type:', req.getResponseHeader('content-type'));
+        
+        var data = req.responseText;
+        console.log('Retrieved:', data);
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        function xhrWrapper (url, callback, errorCallback) {
+            var req = new XMLHttpRequest();
+
+            // HTTP Method, target URL, async flag
+            req.open('GET', url, true);
+
+            // Set load handler before sending request.
+            req.addEventListener('load', function () {
+                console.log('Request to', url, 'received response with status code:', req.status);
+                
+                if (req.status >= 400 && errorCallback) {
+                    // Error
+                    errorCallback();
+                } else {
+                    // Success
+                    callback(req.responseText);
+                }
+            });
+            
+            req.addEventListener('error', function () {
+                console.log('Handling error event.');
+                
+                if (errorCallback) {
+                    errorCallback();
+                }
+            });
+
+            // No body needed for GET request
+            req.send(null);
+        }
+        
+        // Handled by load event handler.
+        xhrWrapper('data.json',
+            function (data) {
+                console.log('Success:', data)
+            }
+        );
+        
+        // Handled by load event handler.
+        xhrWrapper('non-existent.json',
+            function (data) {
+                console.log('Success:', data)
+            },
+            function () {
+                console.log('Failure');
+            }
+        );
+        
+        // Handled by error event handler.
+        xhrWrapper('http://www.fake.fake',
+            function (data) {
+                console.log('Success:', data)
+            },
+            function () {
+                console.log('Failure');
+            }
+        );
+        
+    </script>
+</body>
+</html>

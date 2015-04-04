@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        function getContent (url, contentType) {
+            return new Promise(function (success, failure) {
+                var xhr = new XMLHttpRequest();
+                
+                // Open the targeted URL.
+                xhr.open('GET', url, true);
+                
+                // Default to text/plain content type.
+                contentType = contentType || 'text/plain';
+                
+                console.log('Using content-type:', contentType);
+                
+                // Set the expected content type.
+                xhr.setRequestHeader('Content-Type', contentType);
+                
+                // Set load and error event handlers.
+                xhr.addEventListener('load', function () {
+                    if (xhr.status === 200) {
+                        // Success status code
+                        success(xhr.responseText);
+                    } else {
+                        // Everything else is considered a failure.
+                        failure(xhr.status) 
+                    }
+                });
+                
+                xhr.addEventListener('error', function () {
+                    failure(new Error('Network error')); 
+                });
+                
+                // Execute the GET request.
+                xhr.send(null);
+            });
+        }
+        
+        function errorHandler (error) {
+            console.log('Caught error:', error);   
+        }
+        
+        function logHeader (text) {
+            console.log('%c' + text, 'font-weight: bold; color: #666; line-height: 2rem; font-size: 1.1rem;');    
+        }
+        
+        function logOutput (result) {
+            console.log('Result:', result);
+            
+            return result;
+        }
+        
+        function requestTextPlain () {
+            // Basic request, content type set to text/plain
+            logHeader('text/plain Request');
+            getContent('http://eloquentjavascript.net/author', 'text/plain')
+                .then(logOutput)
+                .then(requestTextHtml);
+        }
+        
+        function requestTextHtml () {
+            // Request HTML content.
+            logHeader('text/html Request');
+            getContent('http://eloquentjavascript.net/author', 'text/html')
+                .then(logOutput)
+                .catch(errorHandler);
+        }
+        
+        // Basic request, no content-type specified (will default to text/plain)
+        logHeader('Basic Request');
+        getContent('http://eloquentjavascript.net/author')
+            .then(logOutput)
+            .then(requestTextPlain);
+        
+        
+    </script>
+</body>
+</html>

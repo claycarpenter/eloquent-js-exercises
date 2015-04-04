@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            *:focus {
+                background-color: red;
+            }
+        </style>
+    </head>
+<body>
+    <p>Tabindex value of -1 will mean that focus is never directed to element as a result of tabbing. In this example, the link cannot be tabbed to.</p>
+    
+    <div>
+        <input type="text" tabindex="1">
+        <a href="#" tabindex="-1">Some link</a>
+        <input type="text" tabindex="2">
+    </div>
+    
+    <script>
+    </script>
+</body>
+</html>

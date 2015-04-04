@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <h2>Disabled</h2>
+    <div>
+        <p>Disabled - Set Via HTML Attributes</p>
+        <label for="disabledRadioYes">Yes</label>
+        <input type="radio" id="disabledRadioYes" name="disabledRadio" value="yes" disabled>
+        <label for="disabledRadioNo">No</label>
+        <input type="radio" id="disabledRadioNo" name="disabledRadio" value="no" disabled>
+    </div>
+    <div>
+        <p>Disabled - Set Via JS</p>
+        <label for="disabledRadioJsYes">Yes</label>
+        <input type="radio" id="disabledRadioJsYes" name="disabledRadioJs" value="yes">
+        <label for="disabledRadioJsNo">No</label>
+        <input type="radio" id="disabledRadioJsNo" name="disabledRadioJs" value="no">
+    </div>
+    
+    <h2>Checked</h2>
+    <div>
+        <p>Checked - Set Via HTML Attributes</p>
+        <label for="disabledRadioYes">Yes</label>
+        <input type="radio" id="disabledRadioYes" name="checkedRadio" value="yes" checked>
+        <label for="disabledRadioNo">No</label>
+        <input type="radio" id="disabledRadioNo" name="checkedRadio" value="no">
+    </div>
+    <div>
+        <p>Checked - Set Via JS</p>
+        <label for="checkedRadioJsYes">Yes</label>
+        <input type="radio" id="checkedRadioJsYes" name="checkedRadioJs" value="yes">
+        <label for="checkedRadioJsNo">No</label>
+        <input type="radio" id="checkedRadioJsNo" name="checkedRadioJs" value="no">
+    </div>
+    
+    <script>
+        // Disable via attribute
+        var disabledRadioInputs = Array.prototype.slice.call(document.querySelectorAll('input[name=disabledRadioJs]'));
+        disabledRadioInputs.forEach(function (radioInput) {
+            radioInput.disabled = true; 
+        });
+        
+        // Check via attribute
+        var checkedRadioInput = document.querySelector('input[name=checkedRadioJs]');
+        checkedRadioInput.checked = true;
+    </script>
+</body>
+</html>

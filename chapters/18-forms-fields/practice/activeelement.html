@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <input type="text">
+    </div>
+    
+    <script>
+        document.querySelector('input').focus();
+        console.log(document.activeElement.tagName);
+        
+        document.querySelector('input').blur();
+        console.log(document.activeElement.tagName);
+    </script>
+</body>
+</html>

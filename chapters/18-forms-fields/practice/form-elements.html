@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <p>The form.elements property can be accessed both as an array and as a map.</p>
+    
+    <div>
+        <form>
+            Name: <input type="text" name="username">
+            Password: <input type="password" name="password">
+            <button type="submit">Log In</button>
+        </form>
+    </div>
+    
+    <script>
+        var form = document.querySelector('form');
+        
+        console.log('Accessing by index:', form.elements[1].type);
+        
+        console.log('Accessing by key:', form.elements.password.type);
+        
+        // form input elements' .form property points back to parent form.
+        console.log(form.elements.username.form == form);
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            *:focus {
+                background-color: red;
+            }
+        </style>
+    </head>
+<body>
+    <p>Autofocus attribute directs focus to second input field, even if it's second in the tab order.</p>
+    
+    <div>
+        <input type="text" tabindex="1">
+        <a href="#" tabindex="-1">Some link</a>
+        <input type="text" tabindex="2" autofocus>
+    </div>
+    
+    <script>
+    </script>
+</body>
+</html>

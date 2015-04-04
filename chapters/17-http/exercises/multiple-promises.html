@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Example...
+    </div>
+    
+    <script>
+        function all (promises) {
+            return new Promise (function (success, failure) {
+                var totalPromises = promises.length,
+                    succeeded = 0,
+                    results = [];
+                
+                // If no promises are provided, simply return success.
+                // TODO: There is probably a more elegant way to handle this special case.
+                if (!promises.length) {
+                    success(results);
+                }
+
+                // If a promise succeeds, collect the result.
+                function successHandler (resultIndex) {
+                    return function (result) {
+                        results[resultIndex] = result;
+                        
+                        succeeded = succeeded + 1;
+
+                        // If the results count equals the number of promises,
+                        // we're collected all of the results and can return them.
+                        if (succeeded == totalPromises) {
+                            success(results);
+                        }
+                    };
+                }
+
+                function failureHandler (error) {
+                    // Simply hand the error off to the failure handler.
+                    failure(error);  
+                };
+
+                // For each promise, add a success and failure handler.
+                promises.forEach(function (promise, idx) {
+                    promise
+                        .then(successHandler(idx))
+                        .catch(failureHandler);
+                });
+            });
+        }
+        
+        // Test code.
+        all([]).then(function(array) {
+            console.log("This should be []:", array);
+        });
+        
+        function soon(val) {
+          return new Promise(function(success) {
+            setTimeout(function() { success(val); },
+                       Math.random() * 500);
+          });
+        }
+        all([soon(1), soon(2), soon(3)]).then(function(array) {
+          console.log("This should be [1, 2, 3]:", array);
+        });
+        
+        
+        function fail() {
+          return new Promise(function(success, fail) {
+            fail(new Error("boom"));
+          });
+        }
+        all([soon(1), fail(), soon(3)]).then(function(array) {
+          console.log("We should not get here");
+        }, function(error) {
+          if (error.message != "boom") {
+            console.log("Unexpected failure:", error);
+          } else {
+              console.log('Received expected error:', error.message);
+          }
+        });
+    </script>
+</body>
+</html>

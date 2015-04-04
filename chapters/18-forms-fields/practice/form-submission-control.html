@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            button:disabled {
+                color: #DDD; 
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <form action="name-submit.html" method="GET">
+            <div>
+                Name: <input type="text" name="query" autofocus>
+            </div>
+            <div>
+                <label for="allowSubmitYes">Yes</label>
+                <input type="radio" id="allowSubmitYes" name="allowSubmit" value="yes" checked>
+                <label for="allowSubmitNo">No</label>
+                <input type="radio" id="allowSubmitNo" name="allowSubmit" value="no">
+
+            </div>
+            <button type="submit" disabled>Search</button>
+        </form>
+    </div>
+    
+    <script>
+        var form = document.querySelector('form'),
+            queryInput = document.querySelector('input[name=query]'),
+            submitButton = document.querySelector('button[type=submit]');
+        
+        form.addEventListener('submit', function (event) {
+            var allowSubmitValue = document.querySelector('input[name=allowSubmit]:checked').value,
+                allowSubmit = (allowSubmitValue === 'yes'); 
+            
+            // Only need to act if we're preventing a submission.
+            if (!allowSubmit) {            
+                event.preventDefault();
+                
+                alert('Query for ' + queryInput.value);
+            }
+        });
+        
+        queryInput.addEventListener('input', function (event) {
+            console.log('.disabled:', submitButton.disabled);
+            submitButton.disabled = !(queryInput.value.length);
+            console.log('.disabled:', submitButton.disabled);
+        });
+    </script>
+</body>
+</html>

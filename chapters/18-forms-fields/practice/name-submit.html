@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <p>Query: <span id="queryValue">[unknown]</span></p>
+    
+    <script>
+        function getQueryParameters (queryString) {
+            var parameterPairs = queryString.split('&'),
+                params = Object.create(null);
+
+            for (var i = 0, x = parameterPairs.length; i < x; i++) {
+                var paramPair = parameterPairs[i];
+
+                var paramPieces = paramPair.split('=');
+                params[paramPieces[0]] = paramPieces[1];
+            }
+            
+            return params;
+        }        
+        
+        var queryString = window.location.search.substring(1);
+        var params = getQueryParameters(queryString);
+        
+        console.log('query:', params.query);
+        
+        var queryValue = document.getElementById('queryValue');
+        queryValue.textContent = params.query;
+    </script>
+</body>
+</html>

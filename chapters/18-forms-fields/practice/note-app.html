@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            textarea {
+                font-family: monospace;
+                line-height: 1.2rem;
+                width: 30rem;
+                height: 10rem;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        Notes: 
+        <select id="notesList"></select>
+        
+        <button id="addNoteButton">New</button>
+    </div>
+    <div>
+        <textarea id="currentNote"></textarea>
+    </div>
+    
+    <script>
+        var notesList = document.querySelector('#notesList'),
+            addNoteButton = document.querySelector('#addNoteButton'),
+            currentNote = document.querySelector('#currentNote');
+        
+        function addToList (name) {
+            var option = document.createElement('option');
+            option.textContent = name;
+            
+            notesList.appendChild(option);
+        }
+        
+        // Initialize the list from localStorage
+        var notes = JSON.parse(localStorage.getItem('notes')) || {"shopping list": ""};
+        
+        for (var name in notes) {
+            if (notes.hasOwnProperty(name)) {
+                addToList(name);
+            }
+        }
+        
+        function saveToStorage() {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+         
+        currentNote.value = notes[notesList.value];
+        
+        notesList.addEventListener('change', function () {
+            currentNote.value = notes[notesList.value];
+        });
+        
+        currentNote.addEventListener('change', function () {
+            notes[notesList.value] = currentNote.value;
+            saveToStorage();
+        });
+        
+        addNoteButton.addEventListener('click', function () {
+            addNote(); 
+        });
+        
+        function addNote() {
+            var name = prompt('Note name', '');
+            
+            if (!name) {
+                // No input provided; cancel action.
+                return;
+            }
+            
+            if (!notes.hasOwnProperty(name)) {
+                notes[name] = '';
+                
+                addToList(name);
+                saveToStorage();
+            }
+            
+            notesList.value = name;
+            
+            currentNote.value = notes[name];
+        }
+    </script>
+</body>
+</html>

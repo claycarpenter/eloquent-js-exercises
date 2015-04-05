@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        Input: <input type="text" id="field">
+        
+        <ul id="suggestions">
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+        </ul>
+    </div>
+    
+    <script>
+//        var input = document.querySelector('#field'),
+//            suggestionsContainer = document.querySelector('#suggestions');
+        
+        function mapSelectors (selectorMap, targetScope) {
+            for (var key in selectorMap) {
+                if (selectorMap.hasOwnProperty(key)) {
+                    var selector = selectorMap[key];
+                    
+                    var queryResults = document.querySelectorAll(selector);
+                    
+                    if (queryResults.length <= 1) {
+                        targetScope[key] = queryResults[0];
+                    } else if (queryResults.length > 1) {
+                        // If the query returned multiple results, then convert
+                        // those results to an array and return that value.
+                        var resultsArray = Array.prototype.slice.call(queryResults);
+                        targetScope[key] = resultsArray;
+                    }
+                }
+            }
+            
+            return targetScope;
+        }
+        
+        var selectorMap = {
+            input: '#field',
+            suggestionsContainer: '#suggestions',
+            suggestionItems: '#suggestions li'
+        }
+        var targetScope = Object.create(null);
+        targetScope = mapSelectors(selectorMap, targetScope);
+        console.log(targetScope);
+    </script>
+</body>
+</html>

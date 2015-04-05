@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <input id="purple" type="checkbox">
+        <label for="purple">Make this page purple</label>
+    </div>
+    
+    <script>
+        var checkbox = document.querySelector('#purple');
+        checkbox.addEventListener('change', function () {
+            document.body.style.backgroundColor = checkbox.checked ? 'rebeccapurple' : ''; 
+        });
+    </script>
+</body>
+</html>

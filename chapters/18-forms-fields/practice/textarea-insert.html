@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            textarea {
+                width: 300px;
+                height: 400px;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <textarea></textarea>
+    </div>
+    
+    <script>
+        var textarea = document.querySelector('textarea');
+        
+        textarea.addEventListener('keydown', function (event) {
+            // Key code for i is 
+            if ((event.keyCode === 105 || event.keyCode === 73) && (event.ctrlKey)) {
+                replaceSelection(textarea, 'Khasekhemwy');
+                event.preventDefault();
+            }
+        });
+        
+        function replaceSelection (field, word) {
+            var from = field.selectionStart,
+                to = field.selectionEnd,
+                initialValue = field.value;
+            
+            field.value = 
+                initialValue.slice(0, from) + word + initialValue.slice(to);
+            
+            field.selectionStart = field.selectionEnd = from + word.length;
+        }
+    </script>
+</body>
+</html>

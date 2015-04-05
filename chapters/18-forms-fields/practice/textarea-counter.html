@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            textarea {
+                width: 300px;
+                height: 400px;
+            }
+            
+            p {
+                font-style: italic;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <textarea></textarea>
+        <p>Length: <span id="length">0</span> characters</p>
+    </div>
+    
+    <script>
+        var textarea = document.querySelector('textarea'),
+            lengthOutput = document.getElementById('length');
+        
+        textarea.addEventListener('input', function (event) {
+            lengthOutput.textContent = textarea.value.length;
+        });
+    </script>
+</body>
+</html>

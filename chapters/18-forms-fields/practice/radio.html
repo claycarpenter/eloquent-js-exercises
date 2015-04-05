@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <input id="lightgreen" type="radio" name="color">
+        <label for="lightgreen">Light green</label>
+        <input id="lightblue" type="radio" name="color">
+        <label for="lightblue">Light blue</label>
+        <input id="palegoldenrod" type="radio" name="color">
+        <label for="palegoldenrod">Pale Goldenrod</label>
+    </div>
+    
+    <script>
+        var radioButtons = Array.prototype.slice.call(
+            document.querySelectorAll('input[name=color]'));
+        
+        radioButtons.forEach(function (radioButton) {
+            radioButton.addEventListener('change', function () {
+               document.body.style.backgroundColor = radioButton.id; 
+            });
+        });
+    </script>
+</body>
+</html>

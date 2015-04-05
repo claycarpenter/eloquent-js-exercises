@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            #drawingCanvas {
+                border: 1px dashed #DDD;
+                position: relative;
+                left: 100px;
+            }
+            
+            .toolbar {
+                width: 500px;
+                border: 1px dashed #DDD;
+            }
+        </style>
+    </head>
+<body>
+    <canvas id="drawingCanvas" width="500" height="300"></canvas>
+    <div class="toolbar">
+        <select id="toolSelect"></select>
+    </div>
+    
+    <script>
+        function mapSelectors (selectorMap, targetScope) {
+            for (var key in selectorMap) {
+                if (selectorMap.hasOwnProperty(key)) {
+                    var selector = selectorMap[key];
+                    
+                    var queryResults = document.querySelectorAll(selector);
+                    
+                    if (queryResults.length <= 1) {
+                        targetScope[key] = queryResults[0];
+                    } else if (queryResults.length > 1) {
+                        // If the query returned multiple results, then convert
+                        // those results to an array and return that value.
+                        var resultsArray = Array.prototype.slice.call(queryResults);
+                        targetScope[key] = resultsArray;
+                    }
+                }
+            }
+            
+            return targetScope;
+        }
+        
+        var selectorMap = {
+            drawingCanvas: '#drawingCanvas',
+            toolSelect: '#toolSelect'
+        }
+        var elementsMap = Object.create(null);
+        mapSelectors(selectorMap, elementsMap);
+        
+        function getContext (canvas) {
+            return canvas.getContext('2d');
+        }
+        
+        var Tools = Object.create(null);
+        
+        Tools.Pencil = function Pencil (canvas) {
+            this.canvas = canvas;   
+        }
+        Object.defineProperty(Tools.Pencil.prototype, 'name', {
+            get: function () { return 'Pencil'; }
+        });
+        Tools.Pencil.prototype.activate = function Pencil__activate () {
+            console.log('Setting up event handlers.');
+            
+            this.canvas.addEventListener('mousedown', this.beginDraw.bind(this));
+        };
+        Tools.Pencil.prototype.deactivate = function Pencil__deactivate () {
+            console.log('Tearing down event handlers.');  
+        };
+        Tools.Pencil.prototype.beginDraw = function Pencil__beginDraw (event) {
+            console.log('Beginning drawing.');  
+            
+            var cx = getContext(this.canvas),
+                canvasBoundingRect = this.canvas.getBoundingClientRect();
+
+            cx.fillRect(
+                event.clientX - canvasBoundingRect.left, 
+                event.clientY - canvasBoundingRect.top, 
+                10, 10);
+        };
+        
+        var toolsRegistry = [
+            Tools.Pencil
+        ];
+            
+        var drawContext,
+            toolkit = Object.create(null);
+        
+        // Really should be fixing event coords before passing them off to the tools.
+        function createPaint () {
+            // Init control panel by creating Tool instances.
+            toolsRegistry.forEach(function (toolType) {
+                var tool = new toolType(elementsMap.drawingCanvas); 
+                
+                toolkit[tool.name] = tool;
+                
+                var toolOption = document.createElement('option');
+                toolOption.value = tool.name;
+                toolOption.textContent = tool.name;
+                elementsMap.toolSelect.appendChild(toolOption);                
+            });
+            
+            // Find and activate initial tool.
+            var initialTool = toolkit[elementsMap.toolSelect.value];
+            initialTool.activate();
+        }
+        
+        // Start the program.
+        createPaint();
+    </script>
+</body>
+</html>

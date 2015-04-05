@@ -6,7 +6,6 @@
             #drawingCanvas {
                 border: 1px dashed #DDD;
                 position: relative;
-                left: 100px;
             }
             
             .toolbar {
@@ -50,36 +49,70 @@
         var elementsMap = Object.create(null);
         mapSelectors(selectorMap, elementsMap);
         
+        var mouseEvents = {
+            MouseDown: 'mousedown',
+            MouseUp: 'mouseup',
+            Click: 'click',
+            MouseMove: 'mousemove'
+        };
+        
         function getContext (canvas) {
             return canvas.getContext('2d');
+        }
+        
+        function Vector (x, y) {
+            this.x = x; this.y = y;   
         }
         
         var Tools = Object.create(null);
         
         Tools.Pencil = function Pencil (canvas) {
-            this.canvas = canvas;   
+            this.canvas = canvas;  
+            this.cx = getContext(this.canvas);
+            
+            this.lastDrawPoint = null;
+            this.isDrawing = false;
         }
         Object.defineProperty(Tools.Pencil.prototype, 'name', {
             get: function () { return 'Pencil'; }
         });
-        Tools.Pencil.prototype.activate = function Pencil__activate () {
-            console.log('Setting up event handlers.');
-            
-            this.canvas.addEventListener('mousedown', this.beginDraw.bind(this));
-        };
-        Tools.Pencil.prototype.deactivate = function Pencil__deactivate () {
-            console.log('Tearing down event handlers.');  
-        };
-        Tools.Pencil.prototype.beginDraw = function Pencil__beginDraw (event) {
+        Tools.Pencil.prototype.events = [
+            mouseEvents.MouseDown,
+            mouseEvents.MouseMove,
+            mouseEvents.MouseUp
+        ];
+        Tools.Pencil.prototype.beginDraw = function Pencil__beginDraw (pos) {
             console.log('Beginning drawing.');  
             
-            var cx = getContext(this.canvas),
-                canvasBoundingRect = this.canvas.getBoundingClientRect();
-
-            cx.fillRect(
-                event.clientX - canvasBoundingRect.left, 
-                event.clientY - canvasBoundingRect.top, 
-                10, 10);
+            this.lastDrawPoint = pos;
+            this.isDrawing = true;
+            
+            this.cx.save();
+            this.cx.lineCap = 'round';
+        };
+        Tools.Pencil.prototype.draw = function Pencil__draw (pos) {
+            this.cx.beginPath();
+            this.cx.moveTo(this.lastDrawPoint.x, this.lastDrawPoint.y);
+            this.cx.lineTo(pos.x, pos.y);
+            this.cx.stroke();
+            
+            this.lastDrawPoint = pos;
+        };
+        Tools.Pencil.prototype.endDraw = function Pencil__endDraw (pos) {
+            this.lastDrawPoint = null;
+            this.isDrawing = false;
+            this.cx.restore();
+        };
+        Tools.Pencil.prototype.mousedown = function Pencil__onmousedown (event) {
+            this.beginDraw(new Vector(event.canvasX, event.canvasY));
+        };
+        Tools.Pencil.prototype.mousemove = function Pencil__onmousedown (event) {
+            if (this.isDrawing) {
+                this.draw(new Vector(event.canvasX, event.canvasY));
+            }
+        };
+        Tools.Pencil.prototype.mouseup = function Pencil__onmousedown (event) {
+            this.endDraw(new Vector(event.canvasX, event.canvasY));
         };
         
         var toolsRegistry = [
@@ -89,7 +122,10 @@
         var drawContext,
             toolkit = Object.create(null);
         
-        // Really should be fixing event coords before passing them off to the tools.
+        function getCurrentTool () {
+            return toolkit[elementsMap.toolSelect.value];
+        }
+        
         function createPaint () {
             // Init control panel by creating Tool instances.
             toolsRegistry.forEach(function (toolType) {
@@ -103,9 +139,29 @@
                 elementsMap.toolSelect.appendChild(toolOption);                
             });
             
-            // Find and activate initial tool.
-            var initialTool = toolkit[elementsMap.toolSelect.value];
-            initialTool.activate();
+            var canvasBoundingRect = elementsMap.drawingCanvas.getBoundingClientRect();
+            
+            Object.keys(mouseEvents).forEach(function (eventKey) {
+                var eventName = mouseEvents[eventKey];
+                
+                elementsMap.drawingCanvas.addEventListener(eventName, function (event) {
+                    var currentTool = getCurrentTool();
+
+                    if (currentTool.events.indexOf(eventName) > -1) {
+                        event.canvasX = event.clientX - canvasBoundingRect.left;
+                        event.canvasY = event.clientY - canvasBoundingRect.top;
+
+//                        console.log('Passing', eventName, 'event off to tool.');
+                        
+                        // Prevent default event responses, which should 
+                        // prevent highlighting from occurring during 
+                        // drag operations.
+                        event.preventDefault();
+                        
+                        currentTool[eventName](event);
+                    }
+                });
+            });
         }
         
         // Start the program.

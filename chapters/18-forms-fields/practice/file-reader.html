@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <input type="file" multiple>
+    </div>
+    
+    <script>
+        var input = document.querySelector('input[type=file]');
+        
+        input.addEventListener('change', function () {
+            Array.prototype.forEach.call(input.files, function (file) {
+                var reader = new FileReader();
+                
+                reader.addEventListener('load', function () {
+                    console.log('File', file.name,'is of type', file.type,'and contains',reader.result.length,'characters.');
+                    if (file.type === 'application/json') {
+                        console.log('Parsing JSON data...');
+                        console.log(JSON.parse(reader.result));
+                    }
+                });
+                
+                reader.readAsText(file);
+            });
+        });
+    </script>
+</body>
+</html>

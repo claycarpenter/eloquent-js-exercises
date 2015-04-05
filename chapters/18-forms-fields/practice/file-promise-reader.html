@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        </style>
+    </head>
+<body>
+    <div>
+        <input type="file" multiple>
+    </div>
+    
+    <script>
+        var input = document.querySelector('input[type=file]');
+        
+        function readFile (file) {
+            return new Promise(function (success, failure) {
+                var reader = new FileReader();
+                
+                reader.addEventListener('load', function () {
+                    success(reader.result);
+                });
+                
+                reader.addEventListener('error', function () {
+                    failure(reader.error); 
+                });
+                
+                reader.readAsText(file);
+            });
+        }
+        
+        input.addEventListener('change', function () {
+            Array.prototype.forEach.call(input.files, function (file) {
+                var reader = readFile(file)
+                    .then(function (result) {
+                        console.log('Retrieved result:', result);
+                        
+                        return result;
+                    })
+                    .catch(function (error) {
+                        console.error('Caught error:', error);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

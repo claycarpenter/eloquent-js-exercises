@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            #suggestions {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        Input: <input type="text" id="field">
+        <ul id="suggestions"></ul>
+    </div>
+    
+    <script>
+        var input = document.querySelector('#field'),
+            suggestionsContainer = document.querySelector('#suggestions');
+        
+        // Populate the available suggestions with variables available 
+        // in the global (window) scope.
+        var terms = [];
+        for (var name in window) {
+            terms.push(name);
+        }
+        
+        function clearSuggestions () {
+            // Remove all children from the suggestions container.
+            while (suggestionsContainer.firstChild) {
+                suggestionsContainer.removeChild(suggestionsContainer.firstChild);   
+            }
+        }
+        
+        function createSuggestion (name) {
+            var newSuggestion = document.createElement('li');
+            newSuggestion.textContent = name;
+            
+            return newSuggestion;
+        }
+        
+        function addSuggestions (suggestions) {
+            suggestions.forEach(function (suggestionText) {
+                var newSuggestion = createSuggestion(suggestionText);
+
+                suggestionsContainer.appendChild(newSuggestion);
+            });
+        }
+        
+        function findMatchingTerms (searchText) {
+            var matchingTerms = [];
+            
+            terms.forEach(function (term) {
+                // Match terms only from the beginning.
+                if (term.indexOf(searchText) === 0) {
+                    matchingTerms.push(term);
+                }
+            });
+            
+            return matchingTerms;
+        }
+        
+        function inputHandler (event) {
+            // Clear existing suggestions.
+            clearSuggestions();
+            
+            var searchValue = input.value;
+            
+            if (searchValue.length) {
+                // Find new matching terms.
+                var matchingTerms = findMatchingTerms(input.value);
+
+                // Update suggestions with matching terms.
+                addSuggestions(matchingTerms);
+            }
+        }
+        
+        input.addEventListener('input', inputHandler);
+    </script>
+</body>
+</html>

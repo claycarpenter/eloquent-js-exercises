@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+            #code {
+                width: 300px;
+                height: 200px;
+                font-size: 1.1rem;
+                font-family: monospace;
+            }
+            
+            #output {
+                width: 300px;
+                padding: 1rem;
+                font-size: 1.1rem;
+                
+                border: 1px solid #CCC;
+            }
+            
+            #runButton:focus {
+                background-color: #DDD;
+            }
+        </style>
+    </head>
+<body>
+    <div>
+        <textarea id="code">return 'hi';</textarea>
+        <button id="runButton">Run</button>
+        <pre id="output"></pre>
+    </div>
+    
+    <script>
+        var codeInput = document.querySelector('#code'),
+            runButton = document.querySelector('#runButton'),
+            funcOutput = document.querySelector('#output');
+        
+        function runCode () {
+            var codeText = codeInput.value.trim();
+
+            var dynFunc = new Function(codeText);
+            
+            var output;
+            try {
+                output = dynFunc();
+            } catch (error) {
+                output = error.message;
+            }
+            
+            funcOutput.textContent = output;
+        }
+        
+        runButton.addEventListener('click', runCode);
+    </script>
+</body>
+</html>

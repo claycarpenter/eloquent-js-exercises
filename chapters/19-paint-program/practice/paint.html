@@ -88,7 +88,7 @@
             this.isDrawing = true;
             
             this.cx.save();
-            this.cx.lineCap = 'round';
+            this.setDrawStyle();
         };
         Tools.Pencil.prototype.draw = function Pencil__draw (pos) {
             this.cx.beginPath();
@@ -103,6 +103,10 @@
             this.isDrawing = false;
             this.cx.restore();
         };
+        Tools.Pencil.prototype.setDrawStyle = function Pencil__setDrawStyle () {
+            this.cx.lineCap = 'round';
+            this.cx.globalCompositeOperation = 'source-over';
+        };
         Tools.Pencil.prototype.mousedown = function Pencil__onmousedown (event) {
             this.beginDraw(new Vector(event.canvasX, event.canvasY));
         };
@@ -115,8 +119,22 @@
             this.endDraw(new Vector(event.canvasX, event.canvasY));
         };
         
+        Tools.Eraser = function Eraser (canvas) {
+            Tools.Pencil.call(this, canvas);
+        };
+        Tools.Eraser.prototype = Object.create(Tools.Pencil.prototype);
+        Object.defineProperty(Tools.Eraser.prototype, 'name', {
+            get: function () { return 'Eraser'; }
+        });
+        Tools.Eraser.prototype.setDrawStyle = function Eraser__setDrawStyle () {
+            this.cx.lineCap = 'round';
+            this.cx.lineWidth = 10;
+            this.cx.globalCompositeOperation = 'destination-out';
+        };
+        
         var toolsRegistry = [
-            Tools.Pencil
+            Tools.Pencil,
+            Tools.Eraser
         ];
             
         var drawContext,

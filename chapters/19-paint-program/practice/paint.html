@@ -17,8 +17,20 @@
 <body>
     <canvas id="drawingCanvas" width="500" height="300"></canvas>
     <div class="toolbar">
+        <label for="toolSelect">Tool:</label>
         <select id="toolSelect"></select>
+        
+        <label for="colorInput">Color:</label>
         <input id="colorInput" type="color">
+        
+        <label for="strokeWidthInput">Stroke width:</label>
+        <select id="strokeWidthInput">
+            <option>1</option>
+            <option>5</option>
+            <option>10</option>
+            <option>25</option>
+            <option>100</option>
+        </select>
     </div>
     
     <script>
@@ -46,7 +58,8 @@
         var selectorMap = {
             drawingCanvas: '#drawingCanvas',
             toolSelect: '#toolSelect',
-            colorInput: '#colorInput'
+            colorInput: '#colorInput',
+            strokeWidthInput: '#strokeWidthInput'
         }
         var elementsMap = Object.create(null);
         mapSelectors(selectorMap, elementsMap);
@@ -130,7 +143,6 @@
         });
         Tools.Eraser.prototype.setDrawStyle = function Eraser__setDrawStyle () {
             this.cx.lineCap = 'round';
-            this.cx.lineWidth = 10;
             this.cx.globalCompositeOperation = 'destination-out';
         };
         
@@ -187,8 +199,14 @@
             elementsMap.colorInput.addEventListener('change', function (event) {
                 var context = getContext(elementsMap.drawingCanvas);
                 
-                context.strokeStyle = colorInput.value;
-                context.fillStyle = colorInput.value;
+                context.strokeStyle = elementsMap.colorInput.value;
+                context.fillStyle = elementsMap.colorInput.value;
+            });
+            
+            elementsMap.strokeWidthInput.addEventListener('change', function (event) {
+                var context = getContext(elementsMap.drawingCanvas);
+                
+                context.lineWidth = elementsMap.strokeWidthInput.value;
             });
         }
         

@@ -31,6 +31,8 @@
             <option>25</option>
             <option>100</option>
         </select>
+        
+        <a id="saveLink" href="#">Save</a>
     </div>
     
     <script>
@@ -59,7 +61,8 @@
             drawingCanvas: '#drawingCanvas',
             toolSelect: '#toolSelect',
             colorInput: '#colorInput',
-            strokeWidthInput: '#strokeWidthInput'
+            strokeWidthInput: '#strokeWidthInput',
+            saveLink: '#saveLink'
         }
         var elementsMap = Object.create(null);
         mapSelectors(selectorMap, elementsMap);
@@ -207,6 +210,11 @@
                 var context = getContext(elementsMap.drawingCanvas);
                 
                 context.lineWidth = elementsMap.strokeWidthInput.value;
+            });
+            
+            elementsMap.saveLink.addEventListener('mouseover', function (event) {
+                console.log('Updating save link.');
+                elementsMap.saveLink.href = elementsMap.drawingCanvas.toDataURL();
             });
         }
         

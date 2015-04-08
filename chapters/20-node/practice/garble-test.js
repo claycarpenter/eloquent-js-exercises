@@ -1,5 +1,7 @@
 var garble = require('./garble');
 
-var argument = process.argv[2];
+for (var i = 2, x = process.argv.length; i < x; i++) {
+    var argument = process.argv[i];
 
-console.log(garble(argument));
+    console.log(argument, '->', garble(argument));    
+}

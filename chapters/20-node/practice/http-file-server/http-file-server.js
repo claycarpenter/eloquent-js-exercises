@@ -84,4 +84,4 @@ var server = http.createServer(serverEngine),
 
 server.listen(port, host);
 
-console.log('Server listening on ', host + ':' + port);
+console.log('Server listening on', host + ':' + port);

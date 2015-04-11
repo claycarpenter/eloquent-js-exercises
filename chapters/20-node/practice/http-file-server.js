@@ -45,7 +45,10 @@ function urlToPath (requestUrl) {
 }
 
 // Create and start the server.
-var server = http.createServer(serverEngine);
-server.listen(process.env.PORT, process.env.IP);
+var server = http.createServer(serverEngine),
+    host = process.env.IP || 'localhost',
+    port = process.env.PORT || 8080;
 
-console.log('Server listening on ', process.env.IP + ':' + process.env.PORT);
+server.listen(port, host);
+
+console.log('Server listening on ', host + ':' + port);

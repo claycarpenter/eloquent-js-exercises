@@ -1,12 +1,45 @@
 
 var http = require('http'),
     fs = require('fs'),
-    url = require('url');
+    url = require('url'),
+    mime = require('mime');
 
 // Create an entirely blank object.
 // Removing the default object properties ensures that only the method handlers
 // we define here will be available to requesting clients.
 var methodHandlers = Object.create(null);
+
+// GET method handler.
+methodHandlers.GET = function (path, respond) {
+    // Get information about the targeted resource on the local file system, 
+    // including whether that file exists.
+    fs.stat(path, function (error, stats) {
+        if (error && error.code === 'ENOENT') {
+            // File for resource could not be found, respond with 404.
+            respond(404, 'File not found');
+        } else if (error) {
+            // Generic server error.
+            respond(500, error.toString());
+        } else if (stats.isDirectory()) {
+            // Targerted resource is a directory, return file list.
+            fs.readdir(path, function (error, files) {
+                if (error) {
+                    // TODO This is redundant with above generic server failure message.
+                    // Consider consolidating into common error handler.
+                    respond(500, error.toString());
+                } else {
+                    respond(200, files.join('\n'));   
+                }
+            });
+        } else {
+            // Targetred resource is a file, return file contents.
+            var contentType = mime.lookup(path),
+                readStream = fs.createReadStream(path);
+            
+            respond(200, readStream, contentType);
+        }
+    });
+};
 
 function serverEngine (request, response) {
     // Generic response wrapper.

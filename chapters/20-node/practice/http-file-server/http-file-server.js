@@ -41,6 +41,33 @@ methodHandlers.GET = function (path, respond) {
     });
 };
 
+// DELETE method handler.
+methodHandlers.DELETE = function (path, respond) {
+    fs.stat(path, function (error, stats) {
+        if (error && error.code === 'ENOENT') {
+            // 204 - No Content
+            respond(204);
+        } else if (error) {
+            respond(500, error.toString());
+        } else if (stats.isDirectory()) {
+            
+        } else {
+            fs.unlink(path, respondErrorOrNothing(respond));   
+        }
+    });
+};
+
+function respondErrorOrNothing (respond) {
+    return function (error) {
+        if (error) {
+            respond(500, error.toString());
+        } else {
+            // 204 - No Content
+            respond(204);
+        }
+    };
+}
+
 function serverEngine (request, response) {
     // Generic response wrapper.
     function respond (statusCode, body, type) {

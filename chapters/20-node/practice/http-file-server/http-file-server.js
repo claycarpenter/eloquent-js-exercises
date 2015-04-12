@@ -57,6 +57,25 @@ methodHandlers.DELETE = function (path, respond) {
     });
 };
 
+// PUT method handler.
+methodHandlers.PUT = function (path, respond, request) {
+    var outStream = fs.createWriteStream(path);
+
+    // Listen for error events.
+    outStream.on('error', function (error) {
+        // Send 500 - Server Error in response to file write errors.
+        respond(500, error.toString());
+    });
+    
+    outStream.on('finish', function (error) {
+        // Sedn 204 - No Content in response to successful PUTs.
+        respond(204); 
+    });
+    
+    // Begin sreaming the request body to the output resource.
+    request.pipe(outStream);
+};
+
 function respondErrorOrNothing (respond) {
     return function (error) {
         if (error) {

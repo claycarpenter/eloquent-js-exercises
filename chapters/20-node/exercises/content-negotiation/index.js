@@ -12,17 +12,40 @@ var options = {
     }
 };
 
-var req = http.request(options, function (response) {
+function makeRequestPromise (requestOptions) {
+    var deferred = Q.defer();
+    
+    // Resolve Promise on response, even if response status code indicates
+    // an error.
+    var req = http.request(requestOptions, function (response) {
+        deferred.resolve(response);
+    });
+    
+    // Reject Promise on (network) error.
+    req.on('error', function (error) {
+        deferred.reject(error);
+    });
+    
+    // Execute request.
+    req.end();
+    
+    return deferred.promise;
+}
+
+function responseHandler (response) {
     console.log('Status:', response.statusCode);
     
     response.setEncoding('utf8');
     response.on('data', function (chunk) {
         console.log('Response body:', chunk);
     });
-});
+}
 
-req.on('error', function (error) {
+function responseErrorHandler (error) {
     console.error('Error:', error.toString());
-});
+}
 
-req.end();
+var requestPromise = makeRequestPromise(options);
+requestPromise
+    .then(responseHandler)
+    .catch(responseErrorHandler);

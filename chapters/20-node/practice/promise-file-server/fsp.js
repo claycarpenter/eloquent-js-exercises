@@ -21,6 +21,7 @@ Simple module to wrap Node fs async calls in Q promises.
         
         return deferred.promise;
     }
+    exportable.stat = stat;
     
     // Simple Promise wrapper around fs.readdir
     function readdir (path) {
@@ -36,6 +37,5 @@ Simple module to wrap Node fs async calls in Q promises.
         
         return deferred.promise;
     }
-    
-    exportable.stat = stat;
+    exportable.readdir = readdir;
 })(module.exports);

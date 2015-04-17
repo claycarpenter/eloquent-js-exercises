@@ -81,18 +81,25 @@ methodHandlers.GET = function (path, respond) {
 
 // DELETE method handler.
 methodHandlers.DELETE = function (path, respond) {
-    fs.stat(path, function (error, stats) {
-        if (error && error.code === 'ENOENT') {
-            // 204 - No Content
-            respond(204);
-        } else if (error) {
-            respond(500, error.toString());
-        } else if (stats.isDirectory()) {
-            fs.rmdir(path, respondErrorOrNothing(respond));
-        } else {
-            fs.unlink(path, respondErrorOrNothing(respond));   
-        }
-    });
+    var statPromise = stat(path);
+    statPromise
+        .then(function (stats) {
+            if (stats.isDirectory()) {
+                // TODO: Wrap with promise?
+                fs.rmdir(path, respondErrorOrNothing(respond));
+            } else {
+                // TODO: Wrap with promise?
+                fs.unlink(path, respondErrorOrNothing(respond));   
+            }
+        })
+        .catch(function (error) {
+            if (error.code === 'ENOENT') {
+                // 204 - No Content
+                respond(204);
+            } else {
+                respond(500, error.toString());
+            } 
+        });
 };
 
 // PUT method handler.

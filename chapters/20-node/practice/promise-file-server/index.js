@@ -1,41 +1,9 @@
 
 var http = require('http'),
+    fsp = require('./fsp'),
     fs = require('fs'),
     url = require('url'),
-    mime = require('mime'),
-    Q = require('q');
-
-// Simple Promise wrapper around fs.stat.
-function stat (path) {
-    var deferred = Q.defer();
-    
-    fs.stat(path, function (error, stats) {
-        if (error) {
-            // Fail, reject promise.
-            deferred.reject(error);
-        } else {
-            // Success, resolve promise.
-            deferred.resolve(stats);
-        }
-    });
-    
-    return deferred.promise;
-}
-
-// Simple Promise wrapper around fs.readdir
-function readdir (path) {
-    var deferred = Q.defer();
-    
-    fs.readdir(path, function (error, files) {
-        if (error) {
-            deferred.reject(error);
-        } else {
-            deferred.resolve(files);
-        }
-    });
-    
-    return deferred.promise;
-}
+    mime = require('mime');
 
 // Create an entirely blank object.
 // Removing the default object properties ensures that only the method handlers
@@ -46,13 +14,13 @@ var methodHandlers = Object.create(null);
 methodHandlers.GET = function (path, respond) {
     // Get information about the targeted resource on the local file system, 
     // including whether that file exists.
-    var statPromise = stat(path);
+    var statPromise = fsp.stat(path);
     
     statPromise
         .then(function (stats) {
             if (stats.isDirectory()) {
                 // Targeted resource is a directory, return file list.
-                var readdirPromise = readdir(path);
+                var readdirPromise = fsp.readdir(path);
                 readdirPromise
                     .then(function (files) {
                         respond(200, files.join('\n'));
@@ -81,7 +49,7 @@ methodHandlers.GET = function (path, respond) {
 
 // DELETE method handler.
 methodHandlers.DELETE = function (path, respond) {
-    var statPromise = stat(path);
+    var statPromise = fsp.stat(path);
     statPromise
         .then(function (stats) {
             if (stats.isDirectory()) {

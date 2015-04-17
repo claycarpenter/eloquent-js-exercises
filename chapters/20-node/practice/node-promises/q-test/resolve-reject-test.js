@@ -31,8 +31,11 @@ function fin (result) {
 }
 
 var yay = makeDeferred(),
-    nay = makeDeferred();
+    nay = makeDeferred(),
+    adder = makeDeferred();
 
 yay.resolve('OH HAI!');
 
 nay.reject('Oh dear God no!');
+
+adder.resolve(2+3);

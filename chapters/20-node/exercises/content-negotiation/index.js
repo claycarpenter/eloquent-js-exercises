@@ -18,7 +18,21 @@ function makeRequestPromise (requestOptions) {
     // Resolve Promise on response, even if response status code indicates
     // an error.
     var req = http.request(requestOptions, function (response) {
-        deferred.resolve(response);
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+            // Successful response.
+            
+            response.setEncoding('utf8');
+            
+            response.on('data', function (chunk) {
+                response.body = chunk;
+                
+                deferred.resolve(response);
+            });
+        } else {
+            // Status code indicates an error, pass entire response to error
+            // handler.
+            deferred.reject(response);
+        }
     });
     
     // Reject Promise on (network) error.
@@ -34,11 +48,7 @@ function makeRequestPromise (requestOptions) {
 
 function responseHandler (response) {
     console.log('Status:', response.statusCode);
-    
-    response.setEncoding('utf8');
-    response.on('data', function (chunk) {
-        console.log('Response body:', chunk);
-    });
+    console.log('Response body:', response.body);
 }
 
 function responseErrorHandler (error) {

@@ -50,7 +50,7 @@ methodHandlers.DELETE = function (path, respond) {
         } else if (error) {
             respond(500, error.toString());
         } else if (stats.isDirectory()) {
-            
+            fs.rmdir(path, respondErrorOrNothing(respond));
         } else {
             fs.unlink(path, respondErrorOrNothing(respond));   
         }

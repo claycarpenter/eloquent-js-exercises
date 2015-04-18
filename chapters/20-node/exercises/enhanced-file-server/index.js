@@ -3,7 +3,23 @@ var http = require('http'),
     fsp = require('./fsp'),
     fs = require('fs'),
     url = require('url'),
-    mime = require('mime');
+    mime = require('mime'),
+    publicDirName = './public';
+
+var pathUtils = Object.create(null);
+
+(function(exportable) {
+    var path = require('path'),
+        publicDirPath = path.resolve(publicDirName),
+        relPathRegex = /^\.\./;
+    
+    exportable.isSafePath = function isSafePath (testPath) {
+        var resolvedPath = path.resolve(testPath),
+            relativePath = path.relative(publicDirPath, resolvedPath);
+        
+        return !relPathRegex.test(relativePath);
+    };
+})(pathUtils);
 
 // Create an entirely blank object.
 // Removing the default object properties ensures that only the method handlers
@@ -121,7 +137,16 @@ function serverEngine (request, response) {
     console.log('Incoming request:', request.method, 'for resource', request.url);
     
     if (request.method in methodHandlers) {
-        var path = urlToPath(request.url);
+        
+        try {
+            var path = urlToPath(request.url);
+        } catch (error) {
+            respond(400, error.toString());
+            
+            return;
+        }
+        
+        console.log('Converting url', request.url, 'to path', path);
         
         methodHandlers[request.method](path, respond, request);
     } else {
@@ -131,9 +156,14 @@ function serverEngine (request, response) {
 }
 
 function urlToPath (requestUrl) {
-    var path = url.parse(requestUrl).pathname;
+    var urlPath = url.parse(requestUrl).pathname;
+    var path = publicDirName + '/' + decodeURIComponent(urlPath);
     
-    return '.' + decodeURIComponent(path);
+    if (!pathUtils.isSafePath(path)) {
+        throw new Error('File not found');
+    }
+    
+    return require('path').resolve(path);
 }
 
 // Create and start the server.

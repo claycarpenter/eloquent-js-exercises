@@ -1,0 +1,61 @@
+> var path = require('path')
+undefined
+> path.parse('fsp.js')
+TypeError: Object #<Object> has no method 'parse'
+    at repl:1:7
+    at REPLServer.self.eval (repl.js:110:21)
+    at Interface.<anonymous> (repl.js:239:12)
+    at Interface.emit (events.js:95:17)
+    at Interface._onLine (readline.js:203:10)
+    at Interface._line (readline.js:532:8)
+    at Interface._ttyWrite (readline.js:761:14)
+    at ReadStream.onkeypress (readline.js:100:10)
+    at ReadStream.emit (events.js:98:17)
+    at emitKey (readline.js:1096:12)
+> path
+{ resolve: [Function],
+  normalize: [Function],
+  join: [Function],
+  relative: [Function],
+  sep: '/',
+  delimiter: ':',
+  dirname: [Function],
+  basename: [Function],
+  extname: [Function],
+  exists: [Function: deprecated],
+  existsSync: [Function: deprecated],
+  _makeLong: [Function] }
+> path.dirname('fsp.js')
+'.'
+> path.dirname('../promise-file-server/fsp.js')
+'../promise-file-server'
+> path.resolve('../promise-file-server/fsp.js')
+'/home/ubuntu/workspace/chapters/20-node/practice/promise-file-server/fsp.js'
+> var fsp = path.resolve('../promise-file-server/fsp.js')
+undefined
+> var index = path.resolve('index.jsp')
+undefined
+> index
+'/home/ubuntu/workspace/chapters/20-node/practice/promise-file-server/index.jsp'
+> path.relative(fsp, index)
+'../index.jsp'
+> path.relative(index, fsp)
+'../fsp.js'
+> var currDir = path.resolve('.')
+undefined
+> currDir
+'/home/ubuntu/workspace/chapters/20-node/practice/promise-file-server'
+> path.relative(index, currDir)
+'..'
+> path.relative(currDir, fsp)
+'fsp.js'
+> var outTxt = path.resolve('../stream-out.txt')
+undefined
+> outTxt
+'/home/ubuntu/workspace/chapters/20-node/practice/stream-out.txt'
+> path.relative(currDir, outTxt)
+'../stream-out.txt'
+> path.relative(path.resolve('../'), outTxt)
+'stream-out.txt'
+> path.relative(path.resolve('../'), fsp)
+'promise-file-server/fsp.js'

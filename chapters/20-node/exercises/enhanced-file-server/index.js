@@ -105,6 +105,17 @@ methodHandlers.PUT = function (path, respond, request) {
     request.pipe(outStream);
 };
 
+// MKCOL method handler.
+methodHandlers.MKCOL = function (path, respond, request) {
+    fs.mkdir(path, function (error) {
+        if (error) {
+            respond(500, error.toString());
+        } else {
+            respond(204);
+        }
+    });
+};
+
 function respondErrorOrNothing (respond) {
     return function (error) {
         if (error) {
